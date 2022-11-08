@@ -2,9 +2,15 @@
   "name": "solo-project",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd backend && cd server && npx nodemon server.js",
+    "serve": "node backend/server/server.js",
+    "build": "npm install && npm run migrate:latest && npm run seed:data && cd frontend && npm install && npm run build",
+    "migrate:latest": "npx knex migrate:latest --knexfile backend/db/knexfile",
+    "migrate:down": "npx knex migrate:down --knexfile backend/db/knexfile",
+    "seed:data": "npx knex seed:run --knexfile backend/db/knexfile.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +28,7 @@
     "knex": "^2.3.0",
     "node-fetch": "^3.2.10",
     "nodemon": "^2.0.20",
+    "path": "^0.12.7",
     "pg": "^8.8.0",
     "postgres": "^3.3.1"
   }

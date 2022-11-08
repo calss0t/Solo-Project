@@ -1,0 +1,52 @@
+.League_Logo {
+    height: 100px;
+    margin-top: 2.5vh;
+    width: 75px;
+    margin-left: 15%;
+    cursor: pointer;
+    text-align: center;  
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.League_card {
+    margin: auto;
+    width: 20rem;
+    padding-bottom: 3rem;
+    background-color: rgb(112, 113, 114); 
+    display: inline-block;
+    border: 1px;
+    border-color: black;
+}
+
+.League_selection {
+    display: block;
+    align-items: center;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding-top: 3rem;
+    height: auto;
+    width: auto;
+    background-color: rgb(48, 98, 190);
+}
+
+
+.League_name {
+    cursor: pointer;
+    margin-top: 5px;
+    text-align: center;
+    color: white;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+.page_title {
+    color: white;
+    font-size: 80px;
+    text-align: center;
+    padding-bottom: 3rem;
+}
+
+
