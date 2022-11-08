@@ -1,0 +1,28 @@
+{
+  "name": "solo-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calss0t/Solo-Project.git"
+  },
+  "author": "Pol Texido",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/calss0t/Solo-Project/issues"
+  },
+  "homepage": "https://github.com/calss0t/Solo-Project#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "knex": "^2.3.0",
+    "node-fetch": "^3.2.10",
+    "nodemon": "^2.0.20",
+    "pg": "^8.8.0",
+    "postgres": "^3.3.1"
+  }
+}
