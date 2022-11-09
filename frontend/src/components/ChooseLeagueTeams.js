@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Card from "react-bootstrap/Card";
 import "../styles/ChooseLeague.css"
 
-export default function ChooseLeague({ setLeagueID }) {
+export default function ChooseLeagueTeams({ setLeagueID , setLeagueChosen, setNavState}) {
   const [leagueArray, setLeagueArray] = useState([]);
 
   const [ChosenLeagueID, setChosenLeagueID] = useState([])
@@ -43,14 +43,9 @@ export default function ChooseLeague({ setLeagueID }) {
   };
 
   const Submit = () => {
-    let standings = document.getElementById('wg-api-football-games')
-    standings.setAttribute('data-league', ChosenLeagueID)    
-    document.getElementById("wg-api-football-games").classList.remove('hidden')
-    window.document.dispatchEvent(new Event("DOMContentLoaded", {
-      bubbles: true,
-      cancelable: true
-    }));  
     setLeagueID(ChosenLeagueID)
+    setLeagueChosen(true)
+    setNavState("Teams")
 
     // for (let i = 0; i<leagueIDs.length; i++){
     //   let standings = document.getElementsByName(`league ${i + 1}`);

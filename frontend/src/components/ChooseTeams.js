@@ -4,9 +4,7 @@ import Card from "react-bootstrap/Card";
 import "../styles/ChooseLeague.css";
 
 export default function ChooseTeams(props) {
-    const { leagueID , setTeamsSelected} = props;
-
-
+    const { leagueID , setTeamsSelected, setTeamsChosen, setNavState} = props;
 
   const [teamsArray, setTeamsArray] = useState([]);
 
@@ -56,7 +54,7 @@ export default function ChooseTeams(props) {
       )}
       {<br></br>}
       {<br></br>}
-      <Button onClick={() => setTeamsSelected(teams)}> Submit selection</Button>
+      <Button onClick={() => {setTeamsSelected(teams); setTeamsChosen(true); setNavState("")}}> Submit selection</Button>
     </div>
   );
 }

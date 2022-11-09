@@ -37,3 +37,11 @@
   }
 }
 
+.hidden {
+  display: none;
+}
+
+.not_hidden{
+  display: block;
+}
+
