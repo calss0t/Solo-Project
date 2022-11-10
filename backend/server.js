@@ -2,13 +2,13 @@ const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const express = require("express");
 const app = express();
-const knex = require("../knex"); // Maybe I will have to change this
+const knex = require("./knex"); // Maybe I will have to change this
 const PORT = process.env.PORT || 8080;
 //const jwt = require('jsonwebtoken');
-require("dotenv").config({ path: "./../../.env.local" });
+require("dotenv").config({ path: "./.env.local" });
 
 const path = require("path");
-app.use(express.static(path.resolve(__dirname, "../../frontend/build")));
+app.use(express.static(path.resolve(__dirname, "../frontend/build")));
 
 app.use(express.json());
 
@@ -103,7 +103,7 @@ app.get("/soccer/games", (req, res) => {
 });
 
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../../frontend/build", "index.html"));
+  res.sendFile(path.resolve(__dirname, "../frontend/build", "index.html"));
 });
 
 app.listen(PORT, (error) => {
