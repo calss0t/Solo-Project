@@ -54,7 +54,7 @@ export default function ChooseTeams(props) {
 
   return (
     <div className="League_selection">
-      <h1 className="page_title">Now choose up to 3 teams</h1>
+      <h1 className="page_title">Now choose the teams</h1>
       {teamsArray.length == 0 ? (
         <h3>Loading, please wait</h3>
       ) : (
