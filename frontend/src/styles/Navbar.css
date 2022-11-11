@@ -6,8 +6,9 @@
   
   .title-background {
     display: flex;
-    padding-top: 1rem;
-    height: 10rem;
+    height: 250px;
+    text-align: center;
+    width: 100%;
     background-color: rgb(80, 162, 84);
   }
   
@@ -19,39 +20,33 @@
   }
   
   .title {
-    color: rgb(255, 255, 255);
-    margin-bottom: 2rem;
+    color: rgba(17, 24,71, 0.92);
     text-align: center;
+    width: 100%;
     font-size: 100px;
     cursor: pointer;
-    width: 30rem;
-    margin-left: auto;
-    margin-right: auto;
-    font-family:'Courier New', Courier, monospace;
-    background-color: rgb(23, 23, 23);
   }
   
   .nav {
     padding-top: .5rem;
     padding-bottom: 0;
-    background-image: linear-gradient(to left bottom, #4242b3, #7650b9, #9c61be, #bc75c5, #d88bcc);
+    background-color: rgba(17, 24,71, 0.92);
   }
   .nav-item {
+    color: white;
     text-align: center;
     width: 20%;
     font-size: large;
-    /* --bs-nav-tabs-link-active-bg: #986093; */
+    --bs-nav-tabs-link-active-bg: rgba(17, 24,71, 0.92);
     --bs-nav-link-color: white;
     --bs-nav-link-hover-color: white;
+    --bs-nav-tabs-link-active-border-color: none;
+    --bs-nav-tabs-link-border-style: Hidden;
   }
-  /* .nav-tab {
-    --bs-nav-tabs-link-active-color: #0080ff;
-    --bs-nav-tabs-link-active-bg: #986093;
-    --bs-nav-tabs-link-active-border-color:
-  } */
+ 
   
-  /* for movie and tv show nav */
   .nav-item.dropdown{
+    color: white;
     text-align: left;
     width: 40%;
     font-size: large;

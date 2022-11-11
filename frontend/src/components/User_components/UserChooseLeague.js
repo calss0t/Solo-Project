@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import "../styles/ChooseLeague.css";
+import "../../styles/ChooseLeague.css";
 
-export default function ChooseLeagueTeams({
-  setLeagueID,
-  setLeagueChosen,
-  setNavState,
-}) {
+
+export default function UserChooseLeague({ setLeagueID , setUserLeagueChosen, setNavState}) {
   const [leagueArray, setLeagueArray] = useState([]);
 
   const [ChosenLeagueID, setChosenLeagueID] = useState([]);
@@ -22,28 +19,19 @@ export default function ChooseLeagueTeams({
 
   const renderCard = (card) => {
     return (
-      <Card
-        key={card.league_Id}
-        id={card.league_Id + "top"}
-        className="League_card"
-      >
+      <Card key={card.league_Id} id={card.league_Id + "top"} className="League_card">
         <Card.Img
           onClick={() => {
-            document
-              .getElementById(`${card.league_Id}top`)
-              .classList.toggle("League_card_selected");
+            document.getElementById(`${card.league_Id}top`).classList.toggle("League_card_selected")
             setChosenLeagueID(card.league_Id);
           }}
           className="League_Logo"
           alt={`${card.league_name} poster`}
           src={card.league_logo}
         ></Card.Img>
-        {<br></br>}
         <Card.Title
           onClick={() => {
-            document
-              .getElementById(`${card.league_Id}top`)
-              .classList.toggle("League_card_selected");
+            document.getElementById(`${card.league_Id}top`).classList.toggle("League_card_selected")
             setChosenLeagueID(card.league_Id);
           }}
           className="League_name"
@@ -54,10 +42,10 @@ export default function ChooseLeagueTeams({
     );
   };
 
-  const Submit = () => {
-    setLeagueID(ChosenLeagueID);
-    setLeagueChosen(true);
-    setNavState("Teams");
+  const Submit = async () => {
+    setLeagueID(ChosenLeagueID)
+    setUserLeagueChosen(true)
+    setNavState("Profile")
   };
 
   return (
@@ -73,10 +61,7 @@ export default function ChooseLeagueTeams({
       {<br></br>}
       {<br></br>}
       <div className="Submit_button">
-        <Button className="button" onClick={Submit}>
-          {" "}
-          Submit selection
-        </Button>
+      <Button  onClick={Submit}> Submit selection</Button>
       </div>
     </div>
   );

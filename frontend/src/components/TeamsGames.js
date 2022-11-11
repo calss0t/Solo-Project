@@ -1,6 +1,5 @@
-import Button from "react-bootstrap/Button";
 import React, { useEffect, useState } from "react";
-import "../styles/FavouriteTeams.css";
+import "../styles/TeamsGames.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -8,7 +7,7 @@ import Image from "react-bootstrap/Image";
 import Form from "react-bootstrap/Form";
 import moment from "moment";
 
-export default function FavouriteTeams({ teamsSelected, setNavState, setTeamsSelected }) {
+export default function TeamsGames({ teamsSelected }) {
   const [games, setGames] = useState([]);
 
   const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
@@ -27,36 +26,9 @@ export default function FavouriteTeams({ teamsSelected, setNavState, setTeamsSel
         console.log(arr)
         setGames(arr)
       })
-    // setGames([
-    //   {
-    //     FixtureID: 878072,
-    //     status: {
-    //       long: "Match Finished",
-    //       short: "FT",
-    //       elapsed: 90,
-    //     },
-    //     home: {
-    //       id: 531,
-    //       name: "Athletic Club",
-    //       logo: "https://media.api-sports.io/football/teams/531.png",
-    //       winner: true,
-    //     },
-    //     away: {
-    //       id: 720,
-    //       name: "Valladolid",
-    //       logo: "https://media.api-sports.io/football/teams/720.png",
-    //       winner: false,
-    //     },
-    //     goals: {
-    //       home: 3,
-    //       away: 0,
-    //     },
-    //   },
-    // ]);
   }, [date]);
 
   const ShowModal = (prop) => {
-    console.log(prop)
     document.getElementById("game-modal").classList.remove("hidden");
     document.getElementById("myModal1").style.display = "block";
     let game = document.getElementById("wg-api-football-game");
@@ -68,12 +40,11 @@ export default function FavouriteTeams({ teamsSelected, setNavState, setTeamsSel
         cancelable: true,
       })
     );
-    console.log(date)
   }
 
   const renderGames = (game) => {
     return (
-        <Container>
+        <Container key={game.FixtureID}>
           <Row 
             onClick={() => {
               ShowModal(game.FixtureID)
