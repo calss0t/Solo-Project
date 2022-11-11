@@ -1,7 +1,7 @@
 import Nav from 'react-bootstrap/Nav'
 import '../styles/Navbar.css';
 import { useEffect, useState } from "react";
-import logo from "../logo.svg";
+import logo from "../heroPic.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Navbar = (props) => {

@@ -79,3 +79,15 @@
   justify-content: center;
   align-items: center;
 }
+
+h3
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ color: white;   
+}
+
+.button{
+  background-color: #0798ff;
+}
