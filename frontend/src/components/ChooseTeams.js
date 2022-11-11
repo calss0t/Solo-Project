@@ -23,9 +23,10 @@ export default function ChooseTeams(props) {
 
   const renderCard = (card) => {
     return (
-      <Card key={card.id} className="League_card">
+      <Card key={card.id} id={card.id + "top"} className="League_card">
         <Card.Img
           onClick={() => {
+            document.getElementById(`${card.id}top`).classList.toggle("League_card_selected")
             teams.push(card.id);
           }}
           className="League_Logo"
@@ -34,6 +35,7 @@ export default function ChooseTeams(props) {
         ></Card.Img>
         <Card.Title
           onClick={() => {
+            document.getElementById(`${card.id}top`).classList.toggle("League_card_selected")
             teams.push(card.id);
           }}
           className="League_name"
@@ -54,7 +56,11 @@ export default function ChooseTeams(props) {
       )}
       {<br></br>}
       {<br></br>}
-      <Button onClick={() => {setTeamsSelected(teams); setTeamsChosen(true); setNavState("")}}> Submit selection</Button>
+      {<br></br>}
+      {<br></br>}
+      <div className="Submit_button">
+      <Button onClick={() => {setTeamsSelected(teams); setTeamsChosen(true); setNavState("Teams")}}> Submit selection</Button>
+      </div>
     </div>
   );
 }

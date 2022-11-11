@@ -12,12 +12,19 @@
 
 .League_card {
     margin: auto;
-    width: 20rem;
+    width: 18rem;
     padding-bottom: 3rem;
-    background-color: rgb(112, 113, 114); 
+    background-color: rgba(57, 153, 61, 0.679); 
     display: inline-block;
-    border: 1px;
+    border: 3px;
     border-color: black;
+    border-style: solid;
+}
+
+.League_card_selected {
+    border: 6px;
+    border-color: rgb(251, 255, 0);
+    border-style: solid;
 }
 
 .League_selection {
@@ -27,10 +34,10 @@
     margin-right: 100px;
     margin-top: 50px;
     margin-bottom: 50px;
-    padding-top: 3rem;
     height: auto;
     width: auto;
-    background-color: rgb(48, 98, 190);
+    background-color: rgba(12, 110, 16, 0.679);
+    padding: 75px;
 }
 
 
