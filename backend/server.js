@@ -73,33 +73,40 @@ app.get("/soccer/teams", (req, res) => {
     .catch((error) => console.log("error", error));
 });
 
-app.get("/soccer/games", (req, res) => {
-  const teamID = req.get("teamID");
-  const date = req.get("date") ? req.get("date") : "2022-11-09";
-  fetch(
-    `${process.env.API_URL}/fixtures?date=${date}&season=2022&team=${teamID}&timezone=ASIA%2FTOKYO`,
-    {
-      method: "GET",
-      headers: {
-        "x-rapidapi-host": `${process.env.API_HOST}`,
-        "x-rapidapi-key": `${process.env.API_KEY}`,
-      },
-    }
-  )
-    .then((response) => response.json())
-    .then((result) => {
-      if (result.response[0].fixture !== undefined) {
-        const gameInfo = {};
-        gameInfo.FixtureID = result.response[0].fixture.id;
-        gameInfo.status = result.response[0].fixture.status;
-        gameInfo.home = result.response[0].teams.home;
-        gameInfo.away = result.response[0].teams.away;
-        gameInfo.goals = result.response[0].goals;
-        return gameInfo;
+app.get("/soccer/games", async (req, res) => {
+  const teamIDs = req.get("teamIDs");
+  const teamsIDArray = teamIDs.split(",");
+  const date = req.get("DateSelected") ? req.get("DateSelected") : "2022-11-10";
+  console.log(date)
+  const FetchgamesPromises = teamsIDArray.map((ID) => {
+    return fetch(
+      `${process.env.API_URL}/fixtures?date=${date}&season=2022&team=${ID}&timezone=ASIA%2FTOKYO`,
+      {
+        method: "GET",
+        headers: {
+          "x-rapidapi-host": `${process.env.API_HOST}`,
+          "x-rapidapi-key": `${process.env.API_KEY}`,
+        },
       }
-    })
-    .then((resultObject) => res.send(resultObject))
-    .catch((error) => console.log("error", error));
+    ).then((resposne) => resposne.json());
+  });
+
+  await Promise.all(FetchgamesPromises)
+    .then((result) => {
+      const GamesInfo =[]
+      result.forEach((game) => {
+        if (game.response.length >= 1) {
+          const gameInfo = {};
+          gameInfo.FixtureID = game.response[0].fixture.id;
+          gameInfo.status = game.response[0].fixture.status;
+          gameInfo.home = game.response[0].teams.home;
+          gameInfo.away = game.response[0].teams.away;
+          gameInfo.goals = game.response[0].goals;
+          GamesInfo.push(gameInfo);
+        }
+      })
+      return GamesInfo
+      }).then((FinalArray) => res.send(FinalArray))
 });
 
 app.get("*", (req, res) => {

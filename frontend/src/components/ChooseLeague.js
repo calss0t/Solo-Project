@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from "react";
-import Button from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import "../styles/ChooseLeague.css"
+import "../styles/ChooseLeague.css";
 
-export default function ChooseLeague({ setLeagueID }) {
+
+export default function ChooseLeague({ setLeagueID, setNavState }) {
   const [leagueArray, setLeagueArray] = useState([]);
 
-  const [ChosenLeagueID, setChosenLeagueID] = useState([])
+  const [ChosenLeagueID, setChosenLeagueID] = useState([]);
+
 
   useEffect(() => {
-    console.log(setLeagueID)
     fetch("/soccer/leagues")
       .then((res) => res.json())
       .then((arr) => {
-        console.log(arr);
         setLeagueArray(arr);
       });
   }, []);
 
   const renderCard = (card) => {
     return (
-      <Card key={card.league_Id} className="League_card">
+      <Card key={card.league_Id} id={card.league_Id + "top"} className="League_card">
         <Card.Img
           onClick={() => {
-            console.log(card.league_Id)
+            document.getElementById(`${card.league_Id}top`).classList.toggle("League_card_selected")
             setChosenLeagueID(card.league_Id);
           }}
           className="League_Logo"
@@ -32,7 +32,8 @@ export default function ChooseLeague({ setLeagueID }) {
         ></Card.Img>
         <Card.Title
           onClick={() => {
-            setChosenLeagueID(card.league_Id)
+            document.getElementById(`${card.league_Id}top`).classList.toggle("League_card_selected")
+            setChosenLeagueID(card.league_Id);
           }}
           className="League_name"
         >
@@ -42,15 +43,21 @@ export default function ChooseLeague({ setLeagueID }) {
     );
   };
 
-  const Submit = () => {
-    let standings = document.getElementById('wg-api-football-games')
-    standings.setAttribute('data-league', ChosenLeagueID)    
-    document.getElementById("wg-api-football-games").classList.remove('hidden')
-    window.document.dispatchEvent(new Event("DOMContentLoaded", {
-      bubbles: true,
-      cancelable: true
-    }));  
-    setLeagueID(ChosenLeagueID)
+  const Submit = async () => {
+
+    document.getElementById("league-modal").classList.remove("hidden");
+    document.getElementById("myModal").style.display = "block";
+    let standings = document.getElementById("wg-api-football-games");
+    standings.setAttribute("data-league", ChosenLeagueID);
+    document.getElementById("wg-api-football-games").classList.remove("hidden");
+    window.document.dispatchEvent(
+      new Event("DOMContentLoaded", {
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    setLeagueID(ChosenLeagueID);
+    // setNavState("")
 
     // for (let i = 0; i<leagueIDs.length; i++){
     //   let standings = document.getElementsByName(`league ${i + 1}`);
@@ -64,17 +71,23 @@ export default function ChooseLeague({ setLeagueID }) {
     //     })
     //   );
     // }
-  }
+  };
 
   return (
     <div className="League_selection">
       <h1 className="page_title">First choose a league</h1>
-      {leagueArray.length == 0 ? <h3>"Sorry, there are no movies with your current search options"</h3> : leagueArray.map(renderCard)}
+      {leagueArray.length == 0 ? (
+        <h3>"Sorry, there are no movies with your current search options"</h3>
+      ) : (
+        leagueArray.map(renderCard)
+      )}
       {<br></br>}
       {<br></br>}
-      <Button onClick={Submit}> Submit selection</Button>
+      {<br></br>}
+      {<br></br>}
+      <div className="Submit_button">
+      <Button  onClick={Submit}> Submit selection</Button>
+      </div>
     </div>
-  )
-
-
+  );
 }

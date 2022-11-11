@@ -9,21 +9,19 @@ export default function ChooseLeagueTeams({ setLeagueID , setLeagueChosen, setNa
   const [ChosenLeagueID, setChosenLeagueID] = useState([])
 
   useEffect(() => {
-    console.log(setLeagueID)
     fetch("/soccer/leagues")
       .then((res) => res.json())
       .then((arr) => {
-        console.log(arr);
         setLeagueArray(arr);
       });
   }, []);
 
   const renderCard = (card) => {
     return (
-      <Card key={card.league_Id} className="League_card">
+     <Card key={card.league_Id} id={card.league_Id + "top"} className="League_card">
         <Card.Img
           onClick={() => {
-            console.log(card.league_Id)
+            document.getElementById(`${card.league_Id}top`).classList.toggle("League_card_selected")
             setChosenLeagueID(card.league_Id);
           }}
           className="League_Logo"
@@ -32,7 +30,8 @@ export default function ChooseLeagueTeams({ setLeagueID , setLeagueChosen, setNa
         ></Card.Img>
         <Card.Title
           onClick={() => {
-            setChosenLeagueID(card.league_Id)
+            document.getElementById(`${card.league_Id}top`).classList.toggle("League_card_selected")
+            setChosenLeagueID(card.league_Id);
           }}
           className="League_name"
         >
@@ -67,7 +66,11 @@ export default function ChooseLeagueTeams({ setLeagueID , setLeagueChosen, setNa
       {leagueArray.length == 0 ? <h3>"Sorry, there are no movies with your current search options"</h3> : leagueArray.map(renderCard)}
       {<br></br>}
       {<br></br>}
+      {<br></br>}
+      {<br></br>}
+      <div className="Submit_button">
       <Button onClick={Submit}> Submit selection</Button>
+      </div>
     </div>
   )
 

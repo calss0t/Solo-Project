@@ -6,64 +6,123 @@ import ChooseTeams from "./components/ChooseTeams.js";
 import FavouriteTeams from "./components/FavouriteTeams.js";
 import ChooseLeagueTeams from "./components/ChooseLeagueTeams.js";
 import Navbar from "./components/Navbar.js";
+import moment from "moment";
+
 
 import "./App.css";
 
 function App() {
   const [leagueID, setLeagueID] = useState(undefined);
-  const [leagueChosen, setLeagueChosen] = useState(false)
+  const [leagueChosen, setLeagueChosen] = useState(false);
   const [teamsSelected, setTeamsSelected] = useState([]);
-  const [teamsChosen, setTeamsChosen] = useState(false)
+  const [teamsChosen, setTeamsChosen] = useState(false);
   const [navState, setNavState] = useState("Leagues");
 
   const [date, setDate] = useState();
 
+  window.onclick = function (event) {
+    if (event.target == document.getElementById("myModal")) {
+      document.getElementById("myModal").style.display = "none";
+    }
+  };
+  window.onclick = function (event) {
+    if (event.target == document.getElementById("myModal")) {
+      document.getElementById("myModal1").style.display = "none";
+    }
+  };
+
   const [leagueDisplay, setLeagueDisplay] = useState(
-    <div className="League_selection">
+    <div id="league-modal" className="hidden">
       <div
-        name="league 1"
-        className="hidden"
-        id="wg-api-football-games"
-        data-host="v3.football.api-sports.io"
-        data-key="9754ae910660619f1101739d155f3e74"
-        data-date="2022-11-09"
-        data-league="undefined"
-        data-season="2022"
-        data-theme="dark"
-        data-show-toolbar="false"
-        data-show-errors="false"
-        data-show-logos="true"
-        data-modal-game="true"
-        data-modal-standings="true"
-        data-modal-show-logos="true"
-      ></div>
+        id="myModal"
+        className="modal"
+      >
+        <span onClick={() => {
+          document.getElementById("myModal").style.display = "none";
+          setLeagueID(undefined);
+        }} className="close">&times;</span>
+          <div
+            name="league 1"
+            className="hidden"
+            id="wg-api-football-games"
+            data-host="v3.football.api-sports.io"
+            data-key="0a255779144d2cce4dcbe45071efb1d4"
+            data-date={`${moment().format("YYYY-MM-DD")}`}
+            data-league="undefined"
+            data-season="2022"
+            data-theme="dark"
+            data-show-toolbar="true"
+            data-show-errors="false"
+            data-show-logos="true"
+            data-modal-game="true"
+            data-modal-standings="true"
+            data-modal-show-logos="true"
+          ></div>
+      </div>
     </div>
   );
 
   const [modalDisplay, setModalDisplay] = useState(
-    <div
-      id="wg-api-football-game"
-      data-host="v3.football.api-sports.io"
-      data-key="9754ae910660619f1101739d155f3e74"
-      data-id="undefined"
-      data-theme=""
-      data-show-errors="false"
-      data-show-logos="true"
-    ></div>
+     <div id="game-modal" className="hidden">
+       <div
+        id="myModal1"
+        className="modal"
+      >
+        <span onClick={() => {
+          document.getElementById("myModal1").style.display = "none";
+        }} className="close">&times;</span>
+          <div
+            className="hidden"
+            id="wg-api-football-game"
+            data-host="v3.football.api-sports.io"
+            data-key="0a255779144d2cce4dcbe45071efb1d4"
+            data-id="undefined"
+            data-theme=""
+            data-show-errors="false"
+            data-show-logos="true"
+          ></div>
+       </div>
+     </div>
   );
 
   useEffect(() => {
     if (navState === "Leagues") {
-      setNavState(<ChooseLeague setLeagueID={setLeagueID} setNavState={setNavState}/>)
+      setNavState(
+        <ChooseLeague setLeagueID={setLeagueID} setNavState={setNavState} />
+      );
     } else if (navState === "Teams") {
-      {leagueChosen === false && setNavState(<ChooseLeagueTeams setLeagueID={setLeagueID} setNavState={setNavState} setLeagueChosen={setLeagueChosen} />)}
-      {leagueChosen === true && teamsChosen === false && setNavState(<ChooseTeams
-        setNavState={setNavState}
-        setTeamsChosen={setTeamsChosen}
-        setTeamsSelected={setTeamsSelected}
-        leagueID={leagueID}
-      />)}
-      {leagueChosen === true && teamsChosen === true && setNavState(<FavouriteTeams teamsSelected={teamsSelected} setNavState={setNavState}/>)}
+      {
+        leagueChosen === false &&
+          setNavState(
+            <ChooseLeagueTeams
+              setLeagueID={setLeagueID}
+              setNavState={setNavState}
+              setLeagueChosen={setLeagueChosen}
+            />
+          );
+      }
+      {
+        leagueChosen === true &&
+          teamsChosen === false &&
+          setNavState(
+            <ChooseTeams
+              setNavState={setNavState}
+              setTeamsChosen={setTeamsChosen}
+              setTeamsSelected={setTeamsSelected}
+              leagueID={leagueID}
+            />
+          );
+      }
+      {
+        leagueChosen === true &&
+          teamsChosen === true &&
+          setNavState(
+            <FavouriteTeams
+              teamsSelected={teamsSelected}
+              setNavState={setNavState}
+            />
+          );
+      }
       // setNavState(
       //   <>
       //     {leagueChosen === false && <ChooseLeagueTeams setLeagueID={setLeagueID} setLeagueChosen={setLeagueChosen} />}{" "}
@@ -75,21 +134,22 @@ function App() {
       //   </>
       // );
     } else if (navState === "Profile") {
-      setNavState(<SignIn_Register/>);
+      setNavState(<SignIn_Register />);
     }
-    console.log(leagueChosen)
-    console.log(teamsSelected)
-  }, [navState ,leagueID, leagueDisplay, leagueChosen, teamsChosen]);
-
-  useEffect(() => {
-    console.log(leagueDisplay);
-  });
+  }, [navState, leagueID, leagueDisplay, leagueChosen, teamsChosen]);
 
   return (
     <>
-    <Navbar setNavState={setNavState}/>
-    {navState}
-    {leagueDisplay}
+      <Navbar
+        setNavState={setNavState}
+        setLeagueID={setLeagueID}
+        setLeagueChosen={setLeagueChosen}
+        setTeamsSelected={setTeamsSelected}
+        setTeamsChosen={setTeamsChosen}
+      />
+      {navState}
+      {leagueDisplay}
+      {modalDisplay}
       {/* {leagueID === undefined && (
         <ChooseLeague
           setLeagueID={setLeagueID}
