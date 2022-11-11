@@ -100,7 +100,7 @@ function App() {
         <div
           className="hidden"
           id="wg-api-football-game"
-          data-host="v3.football.api-sports.io"
+          data-host="api-football-v1.p.rapidapi.com"
           data-key="6e52a0c9d9mshfb6b47550480881p11fb8djsn4276a4a22209"
           data-id="undefined"
           data-theme=""
