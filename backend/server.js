@@ -86,6 +86,37 @@ app.get("/user/teams", authenticateToken, async (req, res) => {
   }
 });
 
+app.get("/user/teams/info", async(req,res) => {
+  const teamIDs = req.get("teamIDs");
+  const teamsIDArray = teamIDs.split(",");
+  const FetchgamesPromises = teamsIDArray.map((ID) => {
+    return fetch(
+      `${process.env.API_URL}/teams?id=${ID}`,
+      {
+        method: "GET",
+        headers: {
+          "x-rapidapi-host": `${process.env.API_HOST}`,
+          "x-rapidapi-key": `${process.env.API_KEY}`,
+        },
+      }
+    ).then((resposne) => resposne.json());
+  });
+
+  await Promise.all(FetchgamesPromises)
+    .then((result) => {
+      console.log(result)
+      const TeamsInfo = [];
+      result.forEach((team) => {
+          const TeamInfo = {};
+          TeamInfo.name = team.response[0].team.name;
+          TeamInfo.logo = team.response[0].team.logo;
+          TeamsInfo.push(TeamInfo);
+      });
+      return TeamsInfo;
+    })
+    .then((FinalArray) => res.send(FinalArray));
+})
+
 app.get("/soccer/games", async (req, res) => {
   const teamIDs = req.get("teamIDs");
   const teamsIDArray = teamIDs.split(",");

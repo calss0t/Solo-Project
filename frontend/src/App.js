@@ -69,8 +69,8 @@ function App() {
           name="league 1"
           className="hidden"
           id="wg-api-football-games"
-          data-host="api-football-v1.p.rapidapi.com"
-          data-key="6e52a0c9d9mshfb6b47550480881p11fb8djsn4276a4a22209"
+          data-host="v3.football.api-sports.io"
+          data-key="0a255779144d2cce4dcbe45071efb1d4"
           data-date={`${moment().format("YYYY-MM-DD")}`}
           data-league="undefined"
           data-season="2022"
@@ -100,8 +100,8 @@ function App() {
         <div
           className="hidden"
           id="wg-api-football-game"
-          data-host="api-football-v1.p.rapidapi.com"
-          data-key="6e52a0c9d9mshfb6b47550480881p11fb8djsn4276a4a22209"
+          data-host="v3.football.api-sports.io"
+          data-key="0a255779144d2cce4dcbe45071efb1d4"
           data-id="undefined"
           data-theme=""
           data-show-errors="false"
