@@ -45,3 +45,24 @@
     align-content: center;
     width: 300px;
   }
+
+  .Favourite_teams {
+    border: 2px;
+    border-style: solid;
+    border-radius: 15px;
+    border-color: black;
+    height: 100px;
+    width: auto;
+    cursor: pointer;
+    background-color: #2A2F6E;
+    margin-bottom: 20px;
+    color: white;
+  }
+
+  .Favourite_teams_Pictures{
+    max-width:75%;
+    max-height:75%;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+  }

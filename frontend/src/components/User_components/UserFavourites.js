@@ -6,9 +6,11 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import Form from "react-bootstrap/Form";
 import moment from "moment";
+import TeamsGames from "../TeamsGames";
 
 export default function UserFavourites({ userTeamsSelected }) {
   const [games, setGames] = useState([]);
+  const [favouriteTeams, setFavouriteTeams] = useState([])
 
   const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
 
@@ -24,7 +26,17 @@ export default function UserFavourites({ userTeamsSelected }) {
         console.log(arr);
         setGames(arr);
       });
-  }, [date, userTeamsSelected]);
+
+      fetch("/user/teams/info", {
+        headers: {
+          teamIDs: userTeamsSelected
+        }
+      })
+      .then((res) => res.json())
+      .then((arr) => {
+        setFavouriteTeams(arr)
+      });
+  }, [date]);
 
   const ShowModal = (prop) => {
     document.getElementById("game-modal").classList.remove("hidden");
@@ -67,8 +79,24 @@ export default function UserFavourites({ userTeamsSelected }) {
     );
   };
 
+  const renderFavouriteTeams = (team) => {
+    return (
+      <Col className="Games-Teams-Home">
+          {team.name}
+          {<br></br>}
+      <Image className="Favourite_teams_Pictures" src={team.logo} />
+    </Col>
+    )
+  }
+
   return (
     <div className="League_selection">
+      <h1 className="page_title"> Your teams</h1>
+      <Container>
+        <Row className="Favourite_teams">
+          {favouriteTeams.map(renderFavouriteTeams)}
+        </Row>
+      </Container>
       <h1 className="page_title">
         Your games for {<br></br>} {date}
       </h1>
