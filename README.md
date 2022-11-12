@@ -45,20 +45,35 @@ You should add the following information:
 
 
 DATABASE INFORMATION (Please note that this project is created and prepered to use only Postgres databases):
-DB_USER= ```diff - YOUR DATABASE USERNAME ```
-DB_NAME= ```diff - YOUR DATABASE NAME FOR THIS PROJECT ```
-DB_PASSWORD= ```diff - YOUR DATABASE PASSWORD ```
+
+DB_USER= ``` - YOUR DATABASE USERNAME ```
+
+DB_NAME= ``` - YOUR DATABASE NAME FOR THIS PROJECT ```
+
+DB_PASSWORD= ``` - YOUR DATABASE PASSWORD ```
+
+
 
 NODE ENVIRONMENT
+
 NODE_ENV=development
 
+
+
 SECRET TOKEN FOR JWT
-SECRET_TOKEN= ```diff - YOUR SECRET TOKEN FOR JWT ```
+
+SECRET_TOKEN= ``` - YOUR SECRET TOKEN FOR JWT ```
+
+
 
 API KEYS
-API_KEY= ```diff - YOUR SECRET API KEY ```
+
+API_KEY= ``` - YOUR SECRET API KEY ```
+
 API_URL=https://v3.football.api-sports.io
+
 API_HOST=v3.football.api-sports.io
+
 
 You can get an API Key by going to the following link: https://dashboard.api-football.com/register
 
