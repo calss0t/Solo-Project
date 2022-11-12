@@ -1,4 +1,4 @@
-"This was created in a week during my time as a student at Code Chrysalis."
+This was created in a week during my time as a student at Code Chrysalis.
 
 
 # Twin Shot
@@ -81,7 +81,7 @@ API_URL=https://v3.football.api-sports.io
 API_HOST=v3.football.api-sports.io
 
 
-You can get an API Key by going to the following link: https://dashboard.api-football.com/register
+You can get an API Key by going to the following link: [API FOOTBALL](https://dashboard.api-football.com/register)
 <br>
 <br>
 
