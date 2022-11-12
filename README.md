@@ -1,3 +1,6 @@
+"This was created in a week during my time as a student at Code Chrysalis."
+
+
 # Twin Shot
 
 Twin shot is a web application that helps you keep up to date with your favourite football teams and leagues.
@@ -79,7 +82,8 @@ API_HOST=v3.football.api-sports.io
 
 
 You can get an API Key by going to the following link: https://dashboard.api-football.com/register
-
+<br>
+<br>
 
 ### Setting up your DB
 
