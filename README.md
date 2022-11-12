@@ -8,6 +8,11 @@ Twin shot is a web application that helps you keep up to date with your favourit
 <br>
 
 
+# Live Demo
+
+[Youtube video](https://youtu.be/ehJdRiQPOB4)
+
+
 # Getting Started
 
 ### Installing dependencies
