@@ -10,6 +10,9 @@ import moment from "moment";
 import UserChooseLeague from "./components/User_components/UserChooseLeague.js";
 import UserChooseTeams from "./components/User_components/UserChooseTeams.js";
 import UserFavourites from "./components/User_components/UserFavourites.js";
+import { widgets } from "./components/widget_scrpits/widgets.js";
+
+import { Link } from "react-router-dom";
 
 import "./App.css";
 
@@ -23,7 +26,6 @@ function App() {
   const [userLeagueChosen, setUserLeagueChosen] = useState(false);
   const [userTeamsSelected, setUserTeamsSelected] = useState([]);
   const [userTeamsChosen, setUserTeamsChosen] = useState(false);
-
 
   window.onclick = function (event) {
     if (event.target == document.getElementById("myModal")) {
@@ -65,7 +67,7 @@ function App() {
         >
           &times;
         </span>
-        <div
+        {/* <div
           name="league 1"
           className="hidden"
           id="wg-api-football-games"
@@ -81,7 +83,7 @@ function App() {
           data-modal-game="true"
           data-modal-standings="true"
           data-modal-show-logos="true"
-        ></div>
+        ></div> */}
       </div>
     </div>
   );
@@ -97,7 +99,7 @@ function App() {
         >
           &times;
         </span>
-        <div
+        {/* <div
           className="hidden"
           id="wg-api-football-game"
           data-host="v3.football.api-sports.io"
@@ -106,16 +108,14 @@ function App() {
           data-theme=""
           data-show-errors="false"
           data-show-logos="true"
-        ></div>
+        ></div> */}
       </div>
     </div>
   );
 
   useEffect(() => {
     if (navState === "Leagues") {
-      setNavState(
-        <ChooseLeague setNavState={setNavState} />
-      );
+      setNavState(<ChooseLeague setNavState={setNavState} />);
     } else if (navState === "Teams") {
       {
         leagueChosen === false &&
@@ -142,11 +142,7 @@ function App() {
       {
         leagueChosen === true &&
           teamsChosen === true &&
-          setNavState(
-            <TeamsGames
-              teamsSelected={teamsSelected}
-            />
-          );
+          setNavState(<TeamsGames teamsSelected={teamsSelected} />);
       }
     } else if (navState === "Profile") {
       {
@@ -154,6 +150,8 @@ function App() {
           userTeamsSelected.length === 0 &&
           setNavState(
             <SignIn_Register
+              as={Link}
+              to="/Profile/SignIn"
               setNavState={setNavState}
               setLogInOrRegister={setLogInOrRegister}
             />
@@ -200,6 +198,7 @@ function App() {
         setLeagueChosen={setLeagueChosen}
         setTeamsSelected={setTeamsSelected}
         setTeamsChosen={setTeamsChosen}
+        setLogInOrRegister={setLogInOrRegister}
       />
       {navState}
       {leagueDisplay}

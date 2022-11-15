@@ -3,6 +3,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../../styles/SignIn_Register.css";
 import validator from "email-validator";
+import { Link } from 'react-router-dom';
+
 
 export default function SignIn_Register({ setLogInOrRegister, setNavState }) {
   let [authMode, setAuthMode] = useState("signin");
@@ -105,12 +107,12 @@ export default function SignIn_Register({ setLogInOrRegister, setNavState }) {
     return (
       <div className="League_selection">
         <div className="Form-container">
-          <Form className="Auth-form">
+          <Form  className="Auth-form">
             <Form.Group className="Auth-form-title">Sign In</Form.Group>
             <Form.Group>
               <div className="text-center">
                 Not registered yet?{" "}
-                <Button onClick={changeAuthMode}>Register</Button>
+                <Button as={Link} to="/Register" onClick={changeAuthMode}>Register</Button>
               </div>
             </Form.Group>
             <Form.Group id="SignInEmail" className="mb-3">
@@ -154,7 +156,7 @@ export default function SignIn_Register({ setLogInOrRegister, setNavState }) {
           <Form.Group>
             <div className="text-center">
               Already registered?{" "}
-              <Button onClick={changeAuthMode}>Sign In</Button>
+              <Button as={Link} to="/SignIn" onClick={changeAuthMode}>Sign In</Button>
             </div>
           </Form.Group>
           <Form.Group id="FirstName" className="mb-3">

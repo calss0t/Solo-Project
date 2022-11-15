@@ -3,29 +3,40 @@ import '../styles/Navbar.css';
 import { useEffect, useState } from "react";
 import logo from "../heroPic.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link, useLocation } from 'react-router-dom';
+import Button from "react-bootstrap/Button";
+import SignIn_Register from './User_components/SignIn_Register';
 
 const Navbar = (props) => {
-  const { setNavState, setLeagueID, setLeagueChosen, setTeamsSelected, setTeamsChosen } = props;
+  const { setNavState, setLeagueID, setLeagueChosen, setTeamsSelected, setTeamsChosen, setLogInOrRegister } = props;
+
+  const location = useLocation();
+
+  const activeKey = location.pathname === '/' ? '/projects' : location.pathname;
 
   return (
     <>
-    
       <div className="title-background">
         <img className="title" alt="saga logo" src={logo}  />
+        <Button className="float-end" size="lg" variant="outline-danger"  as={Link}
+              to="/SignIn" onClick={() => setNavState(<SignIn_Register
+              setNavState={setNavState}
+              setLogInOrRegister={setLogInOrRegister}
+            />)}>Log In or Register</Button>
       </div>
-      <Nav variant="tabs" className="nav justify-content-center" defaultActiveKey="#home">
+      <Nav  activeKey={activeKey} variant="tabs" className="nav justify-content-center">
         <Nav.Item className="nav-item">
-          <Nav.Link onClick={() => {
+          <Nav.Link as={Link} to="/Leagues" onClick={() => {
             setNavState("Leagues")
             setLeagueID(undefined)
             setLeagueChosen(false)
             setTeamsSelected([])
             setTeamsChosen(false)
           }}
-          href="#Leagues">Leagues</Nav.Link>
+          >Leagues</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link onClick={() => {
+          <Nav.Link as={Link} to="/Teams" onClick={() => {
             setNavState("Teams")
             setLeagueID(undefined)
             setLeagueChosen(false)
@@ -33,17 +44,17 @@ const Navbar = (props) => {
             setTeamsChosen(false)
             }
           }
-          href="#Teams">Teams</Nav.Link>
+          >Teams</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link onClick={() => {
+          <Nav.Link as={Link} to="/Profile" onClick={() => {
             setNavState("Profile")
             setLeagueID(undefined)
             setLeagueChosen(false)
             setTeamsSelected([])
             setTeamsChosen(false)
             }
-          } href="#Profile">Profile</Nav.Link>
+          } >Profile</Nav.Link>
         </Nav.Item>
       </Nav>
     </>
