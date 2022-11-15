@@ -6,6 +6,22 @@ const knex = require("./knex"); // Maybe I will have to change this
 const PORT = process.env.PORT || 8080;
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "./.env.local" });
+const axios = require('axios');
+
+
+app.get("/test", (req,res) => {
+  fetch(`https://www.thesportsdb.com/api/v1/json/2/search_all_teams.php?l=Spanish_La_Liga`)
+  .then((resukt) => resukt.json())
+  .then(result => res.send(`${result["teams"].length}`))
+})
+
+
+
+app.get("/test2", (req,res) => {
+  fetch(`https://www.thesportsdb.com/api/v1/json/2/all_leagues.php`)
+  .then((resukt) => resukt.json())
+  .then(result => res.send(result))
+})
 
 const path = require("path");
 app.use(express.static(path.resolve(__dirname, "../frontend/build")));
