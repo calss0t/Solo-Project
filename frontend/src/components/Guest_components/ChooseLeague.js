@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import "../styles/ChooseLeague.css";
+import "../../styles/ChooseLeague.css";
+import moment from "moment";
 
 export default function ChooseLeague({ setNavState }) {
   const [leagueArray, setLeagueArray] = useState([]);
@@ -55,6 +56,7 @@ export default function ChooseLeague({ setNavState }) {
     document.getElementById("myModal").style.display = "block";
     let standings = document.getElementById("wg-api-football-games");
     standings.setAttribute("data-league", ChosenLeagueID);
+    standings.setAttribute("data-date", `${moment().format("YYYY-MM-DD")}`);
     document.getElementById("wg-api-football-games").classList.remove("hidden");
     window.document.dispatchEvent(
       new Event("DOMContentLoaded", {

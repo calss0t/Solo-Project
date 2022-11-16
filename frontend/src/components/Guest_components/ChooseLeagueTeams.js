@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import "../styles/ChooseLeague.css";
+import "../../styles/ChooseLeague.css";
 
 export default function ChooseLeagueTeams({
   setLeagueID,
@@ -32,7 +32,7 @@ export default function ChooseLeagueTeams({
             document
               .getElementById(`${card.league_Id}top`)
               .classList.toggle("League_card_selected");
-            setChosenLeagueID(card.league_Id);
+            setChosenLeagueID(card.League_Id_TheSportsDB);
           }}
           className="League_Logo"
           alt={`${card.league_name} poster`}
@@ -44,7 +44,7 @@ export default function ChooseLeagueTeams({
             document
               .getElementById(`${card.league_Id}top`)
               .classList.toggle("League_card_selected");
-            setChosenLeagueID(card.league_Id);
+            setChosenLeagueID(card.League_Id_TheSportsDB);
           }}
           className="League_name"
         >

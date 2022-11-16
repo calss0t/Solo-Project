@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import "../../styles/SignIn_Register.css";
+import "../styles/SignIn_Register.css";
 import validator from "email-validator";
+import { Link } from "react-router-dom";
+import logo from "../heroPic.jpg";
 
-export default function SignIn_Register({ setLogInOrRegister, setNavState }) {
+
+export default function SignIn_Register({ setLogInOrRegister, setGuest }) {
   let [authMode, setAuthMode] = useState("signin");
 
   const [emailSignIn, setEmailSignIn] = useState("");
@@ -62,7 +65,6 @@ export default function SignIn_Register({ setLogInOrRegister, setNavState }) {
           localStorage.setItem("token", content.token);
           localStorage.setItem("userid", content.userid);
           setLogInOrRegister(true);
-          setNavState("Profile");
         }
       })();
     } else {
@@ -91,7 +93,6 @@ export default function SignIn_Register({ setLogInOrRegister, setNavState }) {
           localStorage.setItem("token", content.token);
           localStorage.setItem("userid", content.userid);
           setLogInOrRegister(true);
-          setNavState("Profile");
         })();
       } else {
         alert("Passwords don't match");
@@ -103,46 +104,64 @@ export default function SignIn_Register({ setLogInOrRegister, setNavState }) {
 
   if (authMode === "signin") {
     return (
-      <div className="League_selection">
-        <div className="Form-container">
-          <Form className="Auth-form">
-            <Form.Group className="Auth-form-title">Sign In</Form.Group>
-            <Form.Group>
-              <div className="text-center">
-                Not registered yet?{" "}
-                <Button onClick={changeAuthMode}>Register</Button>
-              </div>
-            </Form.Group>
-            <Form.Group id="SignInEmail" className="mb-3">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                required
-                type="email"
-                value={emailSignIn}
-                onChange={handleSignInEmail}
-                placeholder="Enter email"
-              />
-              <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-              </Form.Text>
-            </Form.Group>
-            <Form.Group id="SignInPassword" className="mb-3">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                required
-                type="password"
-                placeholder="Password"
-                value={SignInPassword}
-                onChange={handleSignInPassword}
-              />
-            </Form.Group>
-            <Button variant="outline-primary" onClick={SignIn}>
-              {" "}
-              Submit
-            </Button>
-          </Form>
+      <>
+        <div className="title-background">
+          <img className="title" alt="saga logo" src={logo} />
         </div>
-      </div>
+        <div className="League_selection">
+          <div className="Form-container">
+            <Form className="Auth-form">
+              <Form.Group className="Auth-form-title">Sign In</Form.Group>
+              <Form.Group>
+                <div className="text-center">
+                  Not registered yet?{" "}
+                  <Button as={Link} to="/Register" onClick={changeAuthMode}>
+                    Register
+                  </Button>
+                </div>
+              </Form.Group>
+              <Form.Group id="SignInEmail" className="mb-3">
+                <Form.Label>Email address</Form.Label>
+                <Form.Control
+                  required
+                  type="email"
+                  value={emailSignIn}
+                  onChange={handleSignInEmail}
+                  placeholder="Enter email"
+                />
+                <Form.Text className="text-muted">
+                  We'll never share your email with anyone else.
+                </Form.Text>
+              </Form.Group>
+              <Form.Group id="SignInPassword" className="mb-3">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  required
+                  type="password"
+                  placeholder="Password"
+                  value={SignInPassword}
+                  onChange={handleSignInPassword}
+                />
+              </Form.Group>
+              <Button as={Link} to="/User" variant="outline-primary" onClick={SignIn}>
+                {" "}
+                Submit
+              </Button>
+              <Button
+               as={Link}
+               to="/Guest/Leagues"
+                variant="outline-primary"
+                onClick={() => {
+                  setGuest(true);
+                }}
+              >
+                {" "}
+                Continue as guest
+              </Button>
+            </Form>
+          </div>
+        </div>
+      </>
     );
   }
 
@@ -154,7 +173,9 @@ export default function SignIn_Register({ setLogInOrRegister, setNavState }) {
           <Form.Group>
             <div className="text-center">
               Already registered?{" "}
-              <Button onClick={changeAuthMode}>Sign In</Button>
+              <Button as={Link} to="/SignIn" onClick={changeAuthMode}>
+                Sign In
+              </Button>
             </div>
           </Form.Group>
           <Form.Group id="FirstName" className="mb-3">
@@ -200,7 +221,7 @@ export default function SignIn_Register({ setLogInOrRegister, setNavState }) {
               placeholder="Password"
             />
           </Form.Group>
-          <Button variant="outline-primary" onClick={Register}>
+          <Button as={Link} to="/User" variant="outline-primary" onClick={Register}>
             {" "}
             Submit
           </Button>

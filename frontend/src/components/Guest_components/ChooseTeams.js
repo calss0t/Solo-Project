@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
-import "../styles/ChooseLeague.css";
+import "../../styles/ChooseLeague.css";
 
 export default function ChooseTeams(props) {
   const { leagueID, setTeamsSelected, setTeamsChosen, setNavState } = props;
