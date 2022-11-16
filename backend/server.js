@@ -10,7 +10,7 @@ const axios = require('axios');
 
 
 app.get("/test", (req,res) => {
-  fetch(`https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/lookupevent.php?id=441613`)
+  fetch(`https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventsnext.php?id=133602`)
   .then((resukt) => resukt.json())
   .then(result => res.send(result))
 })
@@ -18,7 +18,7 @@ app.get("/test", (req,res) => {
 
 
 app.get("/test2", (req,res) => {
-  fetch(`https://www.thesportsdb.com/api/v1/json/2/all_leagues.php`)
+  fetch(`https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/lookupleague.php?id=4346`)
   .then((resukt) => resukt.json())
   .then(result => res.send(result))
 })
@@ -52,21 +52,17 @@ app.get("/soccer/leagues", async (req, res) => {
 
 app.get("/soccer/teams", (req, res) => {
   const leagueID = req.get("leagueID");
-  fetch(`${process.env.API_URL}/teams?league=${leagueID}&season=2022`, {
-    method: "GET",
-    headers: {
-      "x-rapidapi-host": `${process.env.API_HOST}`,
-      "x-rapidapi-key": `${process.env.API_KEY}`,
-    },
-  })
+  fetch(`https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/lookup_all_teams.php?id=${leagueID}`)
     .then((response) => response.json())
     .then((result) => {
       const teamsArray = [];
-      result.response.forEach((element) => {
+      result.teams.forEach((element) => {
         teamInfo = {};
-        teamInfo.id = element.team.id;
-        teamInfo.name = element.team.name;
-        teamInfo.logo = element.team.logo;
+        teamInfo.id = element.idTeam;
+        teamInfo.idAPIfootball = element.idAPIfootball
+        teamInfo.name = element.strTeam;
+        teamInfo.description = element.strDescriptionEN
+        teamInfo.logo = element.strTeamBadge + "/preview";
         teamsArray.push(teamInfo);
       });
       return teamsArray;
@@ -75,7 +71,69 @@ app.get("/soccer/teams", (req, res) => {
     .catch((error) => console.log("error", error));
 });
 
-app.get("/user/teams", authenticateToken, async (req, res) => {
+
+
+app.get("/soccer/games", async (req, res) => {
+  const teamIDs = req.get("teamIDs");
+  const teamsIDArray = teamIDs.split(",");
+  const date = req.get("DateSelected") ? req.get("DateSelected") : "2022-11-10";
+  const FetchgamesPromises = teamsIDArray.map((ID) => {
+    return fetch(
+      `${process.env.API_URL}/fixtures?date=${date}&season=2022&team=${ID}&timezone=ASIA%2FTOKYO`,
+      {
+        method: "GET",
+        headers: {
+          "x-rapidapi-host": `${process.env.API_HOST}`,
+          "x-rapidapi-key": `${process.env.API_KEY}`,
+        },
+      }
+    ).then((resposne) => resposne.json());
+  });
+
+  await Promise.all(FetchgamesPromises)
+    .then((result) => {
+      const GamesInfo = [];
+      result.forEach((game) => {
+        if (game.response.length >= 1) {
+          const gameInfo = {};
+          gameInfo.FixtureID = game.response[0].fixture.id;
+          gameInfo.status = game.response[0].fixture.status;
+          gameInfo.home = game.response[0].teams.home;
+          gameInfo.away = game.response[0].teams.away;
+          gameInfo.goals = game.response[0].goals;
+          GamesInfo.push(gameInfo);
+        }
+      });
+      return GamesInfo;
+    })
+    .then((FinalArray) => res.send(FinalArray));
+});
+
+app.get("/user/Info", authenticateToken, async (req,res) => {
+  try {
+    const userID = req.get("userID");
+    console.log("userID ", userID);
+    if (userID === undefined) {
+      res.status(500).json({ message: "Internal Server Error" });
+      return;
+    }
+    const data = await knex("users")
+      .select("*")
+      .where({ id: userID });
+      
+    console.log(data)
+    if (data.length > 0) {
+      res.status(200).json(data);
+      return;
+    } else {
+      res.send([]);
+    }
+  } catch (error) {
+    res.status(500);
+  }
+})
+
+app.get("/user/Teams", authenticateToken, async (req, res) => {
   try {
     const userID = req.get("userID");
     console.log("userID ", userID);
@@ -91,8 +149,37 @@ app.get("/user/teams", authenticateToken, async (req, res) => {
       gamesArray.push(data[i].teamId);
     }
 
+    console.log(gamesArray)
+
     if (data.length > 0) {
       res.status(200).json(gamesArray);
+      return;
+    } else {
+      res.send([]);
+    }
+  } catch (error) {
+    res.status(500);
+  }
+});
+
+app.get("/user/Leagues", authenticateToken, async (req, res) => {
+  try {
+    const userID = req.get("userID");
+    console.log("userID ", userID);
+    if (userID === undefined) {
+      res.status(500).json({ message: "Internal Server Error" });
+      return;
+    }
+    const data = await knex("favourite_leagues")
+      .select("leagueId")
+      .where({ user_id: userID });
+    const leaguesArray = [];
+    for (let i = 0; i < data.length; i++) {
+      leaguesArray.push(data[i].leagueId);
+    }
+
+    if (data.length > 0) {
+      res.status(200).json(leaguesArray);
       return;
     } else {
       res.send([]);
@@ -132,42 +219,6 @@ app.get("/user/teams/info", async(req,res) => {
     })
     .then((FinalArray) => res.send(FinalArray));
 })
-
-app.get("/soccer/games", async (req, res) => {
-  const teamIDs = req.get("teamIDs");
-  const teamsIDArray = teamIDs.split(",");
-  const date = req.get("DateSelected") ? req.get("DateSelected") : "2022-11-10";
-  const FetchgamesPromises = teamsIDArray.map((ID) => {
-    return fetch(
-      `${process.env.API_URL}/fixtures?date=${date}&season=2022&team=${ID}&timezone=ASIA%2FTOKYO`,
-      {
-        method: "GET",
-        headers: {
-          "x-rapidapi-host": `${process.env.API_HOST}`,
-          "x-rapidapi-key": `${process.env.API_KEY}`,
-        },
-      }
-    ).then((resposne) => resposne.json());
-  });
-
-  await Promise.all(FetchgamesPromises)
-    .then((result) => {
-      const GamesInfo = [];
-      result.forEach((game) => {
-        if (game.response.length >= 1) {
-          const gameInfo = {};
-          gameInfo.FixtureID = game.response[0].fixture.id;
-          gameInfo.status = game.response[0].fixture.status;
-          gameInfo.home = game.response[0].teams.home;
-          gameInfo.away = game.response[0].teams.away;
-          gameInfo.goals = game.response[0].goals;
-          GamesInfo.push(gameInfo);
-        }
-      });
-      return GamesInfo;
-    })
-    .then((FinalArray) => res.send(FinalArray));
-});
 
 app.post("/user/favouriteTeams", async (req, res) => {
   try {

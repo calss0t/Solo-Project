@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SignIn_Register from "./components/User_components/SignIn_Register.js";
-import ChooseLeague from "./components/ChooseLeague.js";
-import ChooseTeams from "./components/ChooseTeams.js";
-import TeamsGames from "./components/TeamsGames.js";
-import ChooseLeagueTeams from "./components/ChooseLeagueTeams.js";
-import Navbar from "./components/Navbar.js";
+import SignIn_Register from "./components/SignIn_Register.js";
+import ChooseLeague from "./components/Guest_components/ChooseLeague.js";
+import ChooseTeams from "./components/Guest_components/ChooseTeams.js";
+import TeamsGames from "./components/Guest_components/TeamsGames.js";
+import ChooseLeagueTeams from "./components/Guest_components/ChooseLeagueTeams.js";
 import moment from "moment";
-import UserChooseLeague from "./components/User_components/UserChooseLeague.js";
+import UserChooseLeague from "./components/User_components/AddLeague.js";
 import UserChooseTeams from "./components/User_components/UserChooseTeams.js";
 import UserFavourites from "./components/User_components/UserFavourites.js";
+import Profile from "./components/User_components/Profile.js";
+import Guest from "./components/Guest_components/Guest.js";
 
-import { Link } from "react-router-dom";
-
-
+import { Link, Routes, Route } from "react-router-dom";
 
 import "./App.css";
+import Guest_SignIn_Register from "./components/Guest_components/Guest_SignIn_Register.js";
+import { SimpleScrollGrid } from "@fullcalendar/react";
 
 function App() {
   const [leagueID, setLeagueID] = useState(undefined);
@@ -27,6 +28,7 @@ function App() {
   const [userLeagueChosen, setUserLeagueChosen] = useState(false);
   const [userTeamsSelected, setUserTeamsSelected] = useState([]);
   const [userTeamsChosen, setUserTeamsChosen] = useState(false);
+  const [guest, setGuest] = useState(false);
 
   window.onclick = function (event) {
     if (event.target == document.getElementById("myModal")) {
@@ -39,22 +41,7 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    const userID = localStorage.getItem("userid");
-    fetch("/user/teams", {
-      headers: {
-        userID: userID,
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }).then((res) => {
-      if (res.status === 200) {
-        res.json().then((arr) => setUserTeamsSelected(arr));
-      } else {
-        setUserTeamsSelected([]);
-        console.log(res);
-      }
-    });
-  }, [navState]);
+  
 
   const [leagueDisplay, setLeagueDisplay] = useState(
     <div id="league-modal" className="hidden">
@@ -189,22 +176,49 @@ function App() {
           );
       }
     }
-  }, [navState]);
+  }, [navState, guest]);
 
   return (
     <>
-
-      <Navbar
-        setNavState={setNavState}
-        setLeagueID={setLeagueID}
-        setLeagueChosen={setLeagueChosen}
-        setTeamsSelected={setTeamsSelected}
-        setTeamsChosen={setTeamsChosen}
-        setLogInOrRegister={setLogInOrRegister}
-      />
-      {navState}
+      {/* {logInOrRegister === false && guest === false && (
+        <SignIn_Register
+          setLogInOrRegister={setLogInOrRegister}
+          setGuest={setGuest}
+        />
+      )}
+      {logInOrRegister === true && <Profile/>}
+      {logInOrRegister === false && guest === true && (
+        <Guest
+          setNavState={setNavState}
+          setLeagueID={setLeagueID}
+          setLeagueChosen={setLeagueChosen}
+          setTeamsSelected={setTeamsSelected}
+          setTeamsChosen={setTeamsChosen}
+          setLogInOrRegister={setLogInOrRegister}
+          navState={navState}
+        />
+      )} */}
       {leagueDisplay}
       {modalDisplay}
+      <Routes>
+        <Route exact path="/" element={<SignIn_Register setLogInOrRegister={setLogInOrRegister}
+          setGuest={setGuest} />}></Route>
+        <Route exact path="/User" element={<Profile />}></Route>
+        <Route exact path="/Guest/Leagues" element={<Guest setNavState={setNavState}
+          setLeagueID={setLeagueID}
+          setLeagueChosen={setLeagueChosen}
+          setTeamsSelected={setTeamsSelected}
+          setTeamsChosen={setTeamsChosen}
+          setLogInOrRegister={setLogInOrRegister}
+          navState={navState}/>}></Route>
+        <Route exact path="/SignIn" element={<Guest_SignIn_Register />}></Route>
+        <Route
+          exact
+          path="/Guest/Teams"
+          element={<ChooseLeagueTeams setLogInOrRegister={setLogInOrRegister}/>}
+        ></Route>
+        {/* <Route exact path="/User/Addleague" element={<UserChooseLeague />} > </Route> */}
+      </Routes>
     </>
   );
 }

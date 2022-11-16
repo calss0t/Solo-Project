@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import Form from "react-bootstrap/Form";
 import moment from "moment";
-import TeamsGames from "../TeamsGames";
+import TeamsGames from "../Guest_components/TeamsGames";
 
 export default function UserFavourites({ userTeamsSelected }) {
   const [games, setGames] = useState([]);
