@@ -1,6 +1,7 @@
 export async function football_game(t, e, s, a, l, n = !1) {
   var r = new Headers();
-  r.append("x-rapidapi-key", e), r.append("x-rapidapi-host", s);
+  r.append("x-rapidapi-key", e)
+  r.append("x-rapidapi-host", s);
   var i = { method: "GET", headers: r, redirect: "follow" };
   let o = "https://v3.football.api-sports.io/";
   "v3.football.api-sports.io" != s &&

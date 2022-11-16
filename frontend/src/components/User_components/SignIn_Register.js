@@ -3,8 +3,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../../styles/SignIn_Register.css";
 import validator from "email-validator";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
+import FullCalendar from "@fullcalendar/react"; // must go before plugins
+import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 
 export default function SignIn_Register({ setLogInOrRegister, setNavState }) {
   let [authMode, setAuthMode] = useState("signin");
@@ -107,12 +109,14 @@ export default function SignIn_Register({ setLogInOrRegister, setNavState }) {
     return (
       <div className="League_selection">
         <div className="Form-container">
-          <Form  className="Auth-form">
+          <Form className="Auth-form">
             <Form.Group className="Auth-form-title">Sign In</Form.Group>
             <Form.Group>
               <div className="text-center">
                 Not registered yet?{" "}
-                <Button as={Link} to="/Register" onClick={changeAuthMode}>Register</Button>
+                <Button as={Link} to="/Register" onClick={changeAuthMode}>
+                  Register
+                </Button>
               </div>
             </Form.Group>
             <Form.Group id="SignInEmail" className="mb-3">
@@ -149,7 +153,89 @@ export default function SignIn_Register({ setLogInOrRegister, setNavState }) {
   }
 
   return (
-    <div className="League_selection">
+    <section className="h-100 gradient-custom-2">
+      <div className="container py-5 h-100">
+        {" "}
+        {/* Set distance from the top and bottom and sides*/}
+        <div className="row d-flex justify-content-center align-items-center h-100">
+          <div>
+            {/* Set distance from the sides*/}
+            <div className="card">
+              <div
+                className="rounded-top text-white d-flex flex-row"
+                style={{ backgroundColor: "#000", height: "200px" }}
+              >
+                <div
+                  className="ms-4 mt-5 d-flex flex-column"
+                  style={{ width: "150px" }}
+                >
+                  <img
+                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                    alt="Generic placeholder image"
+                    className="img-fluid img-thumbnail mt-4 mb-2"
+                    style={{ width: "150px", zIndex: "1" }}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-outline-dark"
+                    data-mdb-ripple-color="dark"
+                    style={{ zIndex: "1" }}
+                  >
+                    Edit profile
+                  </button>
+                </div>
+                <div className="ms-3" style={{ marginTop: "130px" }}>
+                  <h5>Andy Horwitz</h5>
+                  <p>New York</p>
+                </div>
+              </div>
+              <div
+                className="p-4 text-black"
+                style={{ backgroundColor: "#f8f9fa" }}
+              >
+                <div className="d-flex justify-content-end text-center py-1">
+                  <div>
+                    <p className="mb-1 h5">253</p>
+                    <p className="small text-muted mb-0">Photos</p>
+                  </div>
+                  <div className="px-3">
+                    <p className="mb-1 h5">1026</p>
+                    <p className="small text-muted mb-0">Followers</p>
+                  </div>
+                  <div>
+                    <p className="mb-1 h5">478</p>
+                    <p className="small text-muted mb-0">Following</p>
+                  </div>
+                </div>
+              </div>
+              <div className="card-body p-4 text-black">
+                <div className="mb-5">
+                  <p className="lead fw-normal mb-1">About</p>
+                  <div className="p-4" style={{ backgroundColor: "#f8f9fa" }}>
+                    <p className="font-italic mb-1">Web Developer</p>
+                    <p className="font-italic mb-1">Lives in New York</p>
+                    <p className="font-italic mb-0">Photographer</p>
+                  </div>
+                </div>
+
+                <FullCalendar
+                  plugins={[dayGridPlugin]}
+                  headerToolbar={{
+                    left: "prev,next today",
+                    center: "title",
+                    right: "dayGridMonth timeGridWeek timeGridDay",
+                  }}
+                  initialView="dayGridMonth"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+  {
+    /* <div className="League_selection">
       <div className="Form-container">
         <Form className="Auth-form">
           <Form.Group className="Auth-form-title">Register</Form.Group>
@@ -208,6 +294,6 @@ export default function SignIn_Register({ setLogInOrRegister, setNavState }) {
           </Button>
         </Form>
       </div>
-    </div>
-  );
+    </div> */
+  }
 }

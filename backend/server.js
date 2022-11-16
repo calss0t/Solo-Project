@@ -10,9 +10,9 @@ const axios = require('axios');
 
 
 app.get("/test", (req,res) => {
-  fetch(`https://www.thesportsdb.com/api/v1/json/2/search_all_teams.php?l=Spanish_La_Liga`)
+  fetch(`https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/lookupevent.php?id=441613`)
   .then((resukt) => resukt.json())
-  .then(result => res.send(`${result["teams"].length}`))
+  .then(result => res.send(result))
 })
 
 

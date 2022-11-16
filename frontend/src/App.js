@@ -10,9 +10,10 @@ import moment from "moment";
 import UserChooseLeague from "./components/User_components/UserChooseLeague.js";
 import UserChooseTeams from "./components/User_components/UserChooseTeams.js";
 import UserFavourites from "./components/User_components/UserFavourites.js";
-import { widgets } from "./components/widget_scrpits/widgets.js";
 
 import { Link } from "react-router-dom";
+
+
 
 import "./App.css";
 
@@ -192,6 +193,7 @@ function App() {
 
   return (
     <>
+
       <Navbar
         setNavState={setNavState}
         setLeagueID={setLeagueID}
