@@ -2,9 +2,14 @@ import React, { useEffect, useState } from "react";
 import "../../styles/SignIn_Register.css";
 import { Link, Route, Routes } from "react-router-dom";
 import Background from "../../heroPic.jpg";
+import Col from "react-bootstrap/Col";
+import Image from "react-bootstrap/Image";
+import CalendarView from "./CalendarView";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
 
-import FullCalendar from "@fullcalendar/react"; // must go before plugins
-import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
+// import FullCalendar from "@fullcalendar/react"; // must go before plugins
+// import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import AddLeague from "./AddLeague";
 import AddTeam from "./AddTeam";
 import ChildModal from "./ChildModal";
@@ -13,8 +18,8 @@ export default function Profile({ props }) {
   const [userInfo, setUserInfo] = useState({ name: "", email: "" });
   const [numTeamsFollowing, setNumTeamsFollowing] = useState(0);
   const [numLeaguesFollowing, setNumLeaguesFollowing] = useState(0);
-  const [favouriteTeams, setFavouriteTeams] = useState();
-  const [favouriteLeagues, setFavouriteLeagues] = useState();
+  const [favouriteTeams, setFavouriteTeams] = useState(undefined);
+  const [favouriteLeagues, setFavouriteLeagues] = useState(undefined);
   const [LeagueModal, setLeagueModal] = useState(false);
   const [TeamModal, setTeamModal] = useState(false);
 
@@ -22,12 +27,14 @@ export default function Profile({ props }) {
   const [TeamModalShow, setTeamModalShow] = useState(false);
 
   const [leagueId, setLeagueID] = useState();
+  const [favouriteLeaguesInfo, setFavouriteLeaguesInfo] = useState([]);
+  const [favouriteTeamsInfo, setFavouriteTeamsInfo] = useState([]);
 
   const [ShowChildModal, setShowChildModal] = useState(false);
 
-
+  //Fetch user info, fav leagues and fav teams
   useEffect(() => {
-    console.log(leagueId)
+    console.log(leagueId);
     const userID = localStorage.getItem("userid");
     fetch("/user/Info", {
       headers: {
@@ -43,35 +50,75 @@ export default function Profile({ props }) {
         userID: userID,
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
+    }).then(
+      (res) => {
+        if (res.status === 200) {
+          res.json().then((arr) => {
+            setNumTeamsFollowing(arr.length);
+            setFavouriteTeams(arr);
+          });
+        } else {
+          setFavouriteTeams([]);
+          setNumTeamsFollowing(0);
+        }
+      },
+      [userID]
+    );
+
+    fetch("/user/Leagues", {
+      headers: {
+        userID: userID,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     }).then((res) => {
       if (res.status === 200) {
         res.json().then((arr) => {
-          setNumTeamsFollowing(arr.length);
-          setFavouriteTeams(arr);
+          setNumLeaguesFollowing(arr.length);
+          setFavouriteLeagues(arr);
         });
       } else {
-        setFavouriteTeams([]);
-        setNumTeamsFollowing(0);
+        setFavouriteLeagues([]);
+        setNumLeaguesFollowing(0);
       }
     });
-
-    // fetch("/user/Leagues", {
-    //   headers: {
-    //     userID: userID,
-    //     Authorization: `Bearer ${localStorage.getItem("token")}`,
-    //   },
-    // }).then((res) => {
-    //   if (res.status === 200) {
-    //     res.json().then((arr) => {
-    //       setNumTeamsFollowing(arr.length);
-    //       setFavouriteLeagues(arr);
-    //     });
-    //   } else {
-    //     setFavouriteLeagues([]);
-    //     setNumTeamsFollowing(0);
-    //   }
-    // });
   }, []);
+
+  //Fetch the leagues and teams logos and information
+  useEffect(() => {
+    fetch("/user/favourites/Leagues/Info", {
+      headers: {
+        leagues: favouriteLeagues,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((result) => {
+        if (result.length >= 1) {
+          setFavouriteLeaguesInfo(result);
+        } else {
+          setFavouriteLeaguesInfo([]);
+        }
+      });
+
+    fetch("/user/favourites/Teams/Info", {
+      headers: {
+        teams: favouriteTeams,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((result) => {
+        if (result.length >= 1) {
+          setFavouriteTeamsInfo(result);
+        } else {
+          setFavouriteTeamsInfo([]);
+        }
+      });
+  }, [favouriteLeagues, favouriteTeams]);
 
   const AddLeaguefunction = () => {
     setLeagueModalShow(true);
@@ -82,6 +129,14 @@ export default function Profile({ props }) {
     setTeamModal(true);
     setTeamModalShow(true);
     console.log("test");
+  };
+
+  const renderfavourites = (card) => {
+    return (
+      <Col key={card.id} className="Games-Teams-Home">
+        <Image className="Favourite_teams_Pictures" src={card.badge} />
+      </Col>
+    );
   };
 
   return (
@@ -127,9 +182,11 @@ export default function Profile({ props }) {
               <div className="card-body p-4 text-black">
                 <div className="mb-5">
                   <p className="lead fw-normal mb-1">Favourite Leagues</p>
-                  <div className="p-4" style={{ backgroundColor: "#f8f9fa" }}>
-                    <p className="font-italic mb-1">Web Developer</p>
-                  </div>
+                  <Container>
+                    <Row className="Favourite_teams">
+                      {favouriteLeaguesInfo.map(renderfavourites)}
+                    </Row>
+                  </Container>
                   <button
                     as={Link}
                     to="/User/Addleague"
@@ -142,9 +199,11 @@ export default function Profile({ props }) {
                   </button>
                   <p></p>
                   <p className="lead fw-normal mb-1">Favourite Teams</p>
-                  <div className="p-4" style={{ backgroundColor: "#f8f9fa" }}>
-                    <p className="font-italic mb-1">Web Developer</p>
-                  </div>
+                  <Container>
+                    <Row className="Favourite_teams">
+                    {favouriteTeamsInfo.map(renderfavourites)}
+                    </Row>
+                  </Container>
                   <button
                     onClick={() => {
                       AddTeamfunction();
@@ -155,14 +214,9 @@ export default function Profile({ props }) {
                   </button>
                 </div>
 
-                <FullCalendar
-                  plugins={[dayGridPlugin]}
-                  headerToolbar={{
-                    left: "prev,next today",
-                    center: "title",
-                    right: "dayGridMonth timeGridWeek timeGridDay",
-                  }}
-                  initialView="dayGridMonth"
+                <CalendarView
+                  favouriteLeagues={favouriteLeagues}
+                  favouriteTeams={favouriteTeams}
                 />
               </div>
             </div>
@@ -172,8 +226,21 @@ export default function Profile({ props }) {
       {LeagueModal === true && (
         <AddLeague show={leagueModalShow} setShow={setLeagueModalShow} />
       )}
-      {TeamModal===true && <AddTeam setShowChildModal={setShowChildModal} setLeagueID={setLeagueID} TeamModalShow={TeamModalShow} setTeamModalShow={setTeamModalShow}/>}
-      {ShowChildModal===true && <ChildModal leagueId={leagueId} setShowChildModal={setShowChildModal} ShowChildModal={ShowChildModal}/>}
+      {TeamModal === true && (
+        <AddTeam
+          setShowChildModal={setShowChildModal}
+          setLeagueID={setLeagueID}
+          TeamModalShow={TeamModalShow}
+          setTeamModalShow={setTeamModalShow}
+        />
+      )}
+      {ShowChildModal === true && (
+        <ChildModal
+          leagueId={leagueId}
+          setShowChildModal={setShowChildModal}
+          ShowChildModal={ShowChildModal}
+        />
+      )}
     </>
   );
 }

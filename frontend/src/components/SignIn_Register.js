@@ -6,7 +6,6 @@ import validator from "email-validator";
 import { Link } from "react-router-dom";
 import logo from "../heroPic.jpg";
 
-
 export default function SignIn_Register({ setLogInOrRegister, setGuest }) {
   let [authMode, setAuthMode] = useState("signin");
 
@@ -143,13 +142,18 @@ export default function SignIn_Register({ setLogInOrRegister, setGuest }) {
                   onChange={handleSignInPassword}
                 />
               </Form.Group>
-              <Button as={Link} to="/User" variant="outline-primary" onClick={SignIn}>
+              <Button
+                as={Link}
+                to="/User"
+                variant="outline-primary"
+                onClick={SignIn}
+              >
                 {" "}
                 Submit
               </Button>
               <Button
-               as={Link}
-               to="/Guest/Leagues"
+                as={Link}
+                to="/Guest/Leagues"
                 variant="outline-primary"
                 onClick={() => {
                   setGuest(true);
@@ -166,67 +170,77 @@ export default function SignIn_Register({ setLogInOrRegister, setGuest }) {
   }
 
   return (
-    <div className="League_selection">
-      <div className="Form-container">
-        <Form className="Auth-form">
-          <Form.Group className="Auth-form-title">Register</Form.Group>
-          <Form.Group>
-            <div className="text-center">
-              Already registered?{" "}
-              <Button as={Link} to="/SignIn" onClick={changeAuthMode}>
-                Sign In
-              </Button>
-            </div>
-          </Form.Group>
-          <Form.Group id="FirstName" className="mb-3">
-            <Form.Label>Full Name</Form.Label>
-            <Form.Control
-              required
-              value={firstName}
-              onChange={handleRegisterName}
-              type="email"
-              placeholder="e.g Jane Doe"
-            />
-          </Form.Group>
-          <Form.Group id="RegsiterEmail" className="mb-3">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              required
-              value={registerEmail}
-              onChange={handleRegisterEmail}
-              type="email"
-              placeholder="Email Address"
-            />
-            <Form.Text className="text-muted">
-              We'll never share your email with anyone else.
-            </Form.Text>
-          </Form.Group>
-          <Form.Group id="registerPassword" className="mb-3">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              required
-              value={registerPassword}
-              onChange={handleRegisterPassword}
-              type="password"
-              placeholder="Password"
-            />
-          </Form.Group>
-          <Form.Group id="registerPassword2" className="mb-3">
-            <Form.Label>Confrim Password</Form.Label>
-            <Form.Control
-              required
-              value={registerPassword2}
-              onChange={handleRegisterPassword2}
-              type="password"
-              placeholder="Password"
-            />
-          </Form.Group>
-          <Button as={Link} to="/User" variant="outline-primary" onClick={Register}>
-            {" "}
-            Submit
-          </Button>
-        </Form>
+    <>
+      <div className="title-background">
+        <img className="title" alt="saga logo" src={logo} />
       </div>
-    </div>
+      <div className="League_selection">
+        <div className="Form-container">
+          <Form className="Auth-form">
+            <Form.Group className="Auth-form-title">Register</Form.Group>
+            <Form.Group>
+              <div className="text-center">
+                Already registered?{" "}
+                <Button as={Link} to="/SignIn" onClick={changeAuthMode}>
+                  Sign In
+                </Button>
+              </div>
+            </Form.Group>
+            <Form.Group id="FirstName" className="mb-3">
+              <Form.Label>Full Name</Form.Label>
+              <Form.Control
+                required
+                value={firstName}
+                onChange={handleRegisterName}
+                type="email"
+                placeholder="e.g Jane Doe"
+              />
+            </Form.Group>
+            <Form.Group id="RegsiterEmail" className="mb-3">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                required
+                value={registerEmail}
+                onChange={handleRegisterEmail}
+                type="email"
+                placeholder="Email Address"
+              />
+              <Form.Text className="text-muted">
+                We'll never share your email with anyone else.
+              </Form.Text>
+            </Form.Group>
+            <Form.Group id="registerPassword" className="mb-3">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                required
+                value={registerPassword}
+                onChange={handleRegisterPassword}
+                type="password"
+                placeholder="Password"
+              />
+            </Form.Group>
+            <Form.Group id="registerPassword2" className="mb-3">
+              <Form.Label>Confrim Password</Form.Label>
+              <Form.Control
+                required
+                value={registerPassword2}
+                onChange={handleRegisterPassword2}
+                type="password"
+                placeholder="Password"
+              />
+            </Form.Group>
+            <Button
+              as={Link}
+              to="/User"
+              variant="outline-primary"
+              onClick={Register}
+            >
+              {" "}
+              Submit
+            </Button>
+          </Form>
+        </div>
+      </div>
+    </>
   );
 }

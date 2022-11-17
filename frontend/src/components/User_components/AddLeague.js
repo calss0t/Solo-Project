@@ -14,7 +14,7 @@ export default function AddLeague({
 }) {
   const [leagueArray, setLeagueArray] = useState([]);
 
-  const [ChosenLeagueID, setChosenLeagueID] = useState([]);
+  const [ChosenLeagueID, setChosenLeagueID] = useState();
 
   useEffect(() => {
     fetch("/soccer/leagues")
@@ -40,7 +40,7 @@ export default function AddLeague({
             document
               .getElementById(`${card.league_Id}top`)
               .classList.toggle("League_card_selected");
-            setChosenLeagueID(card.league_Id);
+            setChosenLeagueID(card.League_Id_TheSportsDB);
           }}
           className="League_Logo"
           alt={`${card.league_name} poster`}
@@ -51,7 +51,7 @@ export default function AddLeague({
             document
               .getElementById(`${card.league_Id}top`)
               .classList.toggle("League_card_selected");
-            setChosenLeagueID(card.league_Id);
+            setChosenLeagueID(card.League_Id_TheSportsDB);
           }}
           className="League_name"
         >
@@ -62,21 +62,23 @@ export default function AddLeague({
   };
 
   const Submit = () => {
-    // const userID = localStorage.getItem("userid")
-    // const data = { teams, userID };
-    // (async () => {
-    //     await fetch(`/user/favouriteTeams`, {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Accept: "*/*",
-    //         "Accept-Encoding": "gzip, deflate, br",
-    //         Connection: "keep-alive",
-    //         "Content-Length": 123,
-    //       },
-    //       body: JSON.stringify(data),
-    //     });
-    //   })();
+    const userID = localStorage.getItem("userid")
+    const leagueId = ChosenLeagueID
+    const data = { leagueId, userID };
+    (async () => {
+        await fetch(`/user/addFavourite/league`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "*/*",
+            "Accept-Encoding": "gzip, deflate, br",
+            Connection: "keep-alive",
+            "Content-Length": 123,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(data),
+        });
+      })();
     setShow(false)
   };
 

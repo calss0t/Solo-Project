@@ -18,7 +18,7 @@ app.get("/test", (req,res) => {
 
 
 app.get("/test2", (req,res) => {
-  fetch(`https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/lookupleague.php?id=4346`)
+  fetch(`https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventslast.php?id=133602`)
   .then((resukt) => resukt.json())
   .then(result => res.send(result))
 })
@@ -44,6 +44,135 @@ app.get("/", (req, res) => {
   res.status(200);
   res.send(`name of DB User: ${process.env.DB_USER}`);
 });
+
+app.get("/user/favourites/Leagues/Info", authenticateToken, async (req,res) => {
+  const leagues = req.get("leagues");
+  const leaguesArray = leagues.split(",")
+  const FetchLeagueInfoPromises = leaguesArray.map((ID) => {
+    return fetch(
+      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/lookupleague.php?id=${ID}`,
+    ).then((resposne) => resposne.json());
+  });
+
+  await Promise.all(FetchLeagueInfoPromises)
+    .then((result) => {
+      const LeaguesInfo = [];
+      result.forEach((league) => {
+          const LeagueInfo = {};
+          LeagueInfo.id = league.leagues[0].idLeague;
+          LeagueInfo.idAPIfootball = league.leagues[0].idAPIfootball;
+          LeagueInfo.name = league.leagues[0].strLeague;
+          LeagueInfo.description = league.leagues[0].strDescriptionEN;
+          LeagueInfo.badge = league.leagues[0].strBadge + "/preview";
+          LeaguesInfo.push(LeagueInfo);
+      });
+      return LeaguesInfo;
+    })
+    .then((FinalArray) => res.send(FinalArray));
+})
+
+app.get("/user/favourites/Teams/Info", authenticateToken, async (req,res) => {
+  const teams = req.get("teams");
+  const teamsArray = teams.split(",")
+  const FetchTeamsInfoPromises = teamsArray.map((ID) => {
+    return fetch(
+      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/lookupteam.php?id=${ID}`,
+    ).then((resposne) => resposne.json());
+  });
+
+  await Promise.all(FetchTeamsInfoPromises)
+    .then((result) => {
+      const TeamsInfo = [];
+      result.forEach((team) => {
+          const TeamInfo = {};
+          TeamInfo.id = team.teams[0].idTeam;
+          TeamInfo.idAPIfootball = team.teams[0].idAPIfootball;
+          TeamInfo.name = team.teams[0].strTeam;
+          TeamInfo.description = team.teams[0].strDescriptionEN;
+          TeamInfo.badge = team.teams[0].strTeamBadge + "/preview";
+          TeamsInfo.push(TeamInfo);
+      });
+      return TeamsInfo;
+    })
+    .then((FinalArray) => res.send(FinalArray));
+})
+
+app.get("/user/favourites/Leagues/Games", async (req,res) => {
+  const leagues = req.get("leagues");
+  const leaguesArray = leagues.split(",")
+  const FetchLeagueGamesPromises = []
+  await leaguesArray.forEach((ID) => {
+    FetchLeagueGamesPromises.push(fetch(
+      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventsnextleague.php?id=${ID}`,
+    ).then((resposne) => resposne.json()))
+    FetchLeagueGamesPromises.push(fetch(
+      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventspastleague.php?id=${ID}`,
+    ).then((resposne) => resposne.json()))
+  });
+
+  await Promise.all(FetchLeagueGamesPromises)
+    .then((result) => {
+      const LeaguesGames = [];
+      result.forEach((event) => {
+        event.events.forEach((singleEvent) => {
+          const LeagueGame = {};
+          LeagueGame.id = singleEvent.idEvent;
+          LeagueGame.idAPIfootball = singleEvent.idAPIfootball;
+          LeagueGame.name = singleEvent.strEvent;
+          LeagueGame.timestamp = singleEvent.strTimestamp;
+          LeagueGame.dateEvent = singleEvent.dateEvent;
+          LeaguesGames.push(LeagueGame);
+        })
+      });
+      return LeaguesGames;
+    })
+    .then((FinalArray) => res.send(FinalArray));
+})
+
+app.get("/user/favourites/Teams/Games", async (req,res) => {
+  const teams = req.get("teams");
+  const TeamsArray = teams.split(",")
+  const FetchTeamsGamesPromises = []
+  await TeamsArray.forEach((ID) => {
+    FetchTeamsGamesPromises.push(fetch(
+      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventsnext.php?id=${ID}`,
+    ).then((resposne) => resposne.json()))
+    FetchTeamsGamesPromises.push(fetch(
+      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventslast.php?id=${ID}`,
+    ).then((resposne) => resposne.json()))
+  });
+
+  await Promise.all(FetchTeamsGamesPromises)
+    .then((result) => {
+      const TeamsGames = [];
+      result.forEach((event) => {
+        if(Object.keys(event)[0] === "events"){
+          event.events.forEach((singleEvent) => {
+            const TeamGame = {};
+            TeamGame.id = singleEvent.idEvent;
+            TeamGame.idAPIfootball = singleEvent.idAPIfootball;
+            TeamGame.name = singleEvent.strEvent;
+            TeamGame.timestamp = singleEvent.strTimestamp;
+            TeamGame.dateEvent = singleEvent.dateEvent;
+            TeamsGames.push(TeamGame);
+          })
+        }
+        else if(Object.keys(event)[0] === "results"){
+          event.results.forEach((singleEvent) => {
+            const TeamGame = {};
+            TeamGame.id = singleEvent.idEvent;
+            TeamGame.idAPIfootball = singleEvent.idAPIfootball;
+            TeamGame.name = singleEvent.strEvent;
+            TeamGame.timestamp = singleEvent.strTimestamp;
+            TeamGame.dateEvent = singleEvent.dateEvent;
+            TeamsGames.push(TeamGame);
+          })
+        }
+      });
+      return TeamsGames;
+    })
+    .then((FinalArray) => res.send(FinalArray));
+})
 
 app.get("/soccer/leagues", async (req, res) => {
   const leagues = await knex.select("*").from("leagues");
@@ -112,7 +241,6 @@ app.get("/soccer/games", async (req, res) => {
 app.get("/user/Info", authenticateToken, async (req,res) => {
   try {
     const userID = req.get("userID");
-    console.log("userID ", userID);
     if (userID === undefined) {
       res.status(500).json({ message: "Internal Server Error" });
       return;
@@ -121,7 +249,6 @@ app.get("/user/Info", authenticateToken, async (req,res) => {
       .select("*")
       .where({ id: userID });
       
-    console.log(data)
     if (data.length > 0) {
       res.status(200).json(data);
       return;
@@ -136,7 +263,6 @@ app.get("/user/Info", authenticateToken, async (req,res) => {
 app.get("/user/Teams", authenticateToken, async (req, res) => {
   try {
     const userID = req.get("userID");
-    console.log("userID ", userID);
     if (userID === undefined) {
       res.status(500).json({ message: "Internal Server Error" });
       return;
@@ -148,9 +274,6 @@ app.get("/user/Teams", authenticateToken, async (req, res) => {
     for (let i = 0; i < data.length; i++) {
       gamesArray.push(data[i].teamId);
     }
-
-    console.log(gamesArray)
-
     if (data.length > 0) {
       res.status(200).json(gamesArray);
       return;
@@ -162,10 +285,11 @@ app.get("/user/Teams", authenticateToken, async (req, res) => {
   }
 });
 
+
+
 app.get("/user/Leagues", authenticateToken, async (req, res) => {
   try {
     const userID = req.get("userID");
-    console.log("userID ", userID);
     if (userID === undefined) {
       res.status(500).json({ message: "Internal Server Error" });
       return;
@@ -189,47 +313,70 @@ app.get("/user/Leagues", authenticateToken, async (req, res) => {
   }
 });
 
-app.get("/user/teams/info", async(req,res) => {
-  const teamIDs = req.get("teamIDs");
-  const teamsIDArray = teamIDs.split(",");
-  const FetchgamesPromises = teamsIDArray.map((ID) => {
-    return fetch(
-      `${process.env.API_URL}/teams?id=${ID}`,
-      {
-        method: "GET",
-        headers: {
-          "x-rapidapi-host": `${process.env.API_HOST}`,
-          "x-rapidapi-key": `${process.env.API_KEY}`,
-        },
-      }
-    ).then((resposne) => resposne.json());
-  });
-
-  await Promise.all(FetchgamesPromises)
-    .then((result) => {
-      console.log(result)
-      const TeamsInfo = [];
-      result.forEach((team) => {
-          const TeamInfo = {};
-          TeamInfo.name = team.response[0].team.name;
-          TeamInfo.logo = team.response[0].team.logo;
-          TeamsInfo.push(TeamInfo);
-      });
-      return TeamsInfo;
-    })
-    .then((FinalArray) => res.send(FinalArray));
-})
-
-app.post("/user/favouriteTeams", async (req, res) => {
+app.post("/user/addFavourite/league" , authenticateToken, async (req,res) => {
   try {
-    const { teams, userID } = req.body;
-    teams.forEach(async (team) => {
-      await knex("favourite_teams").insert([{ teamId: team, user_id: userID }]);
-    });
+    const { leagueId, userID } = req.body;
+      await knex("favourite_leagues").insert([{ leagueId: leagueId, user_id: userID }]);
     res.status(200);
   } catch (error) {
+    console.log(error)
   }
-});
+})
+
+
+
+app.post("/user/addFavourite/teams" , authenticateToken, async (req,res) => {
+  try {
+    const { teams, userID } = req.body;
+    teams.forEach(async (teamID) => {
+      await knex("favourite_teams").insert([{ teamId: teamID, user_id: userID }])
+    })
+    res.status(200);
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+// app.get("/user/teams/info", async(req,res) => {
+//   const teamIDs = req.get("teamIDs");
+//   const teamsIDArray = teamIDs.split(",");
+//   const FetchgamesPromises = teamsIDArray.map((ID) => {
+//     return fetch(
+//       `${process.env.API_URL}/teams?id=${ID}`,
+//       {
+//         method: "GET",
+//         headers: {
+//           "x-rapidapi-host": `${process.env.API_HOST}`,
+//           "x-rapidapi-key": `${process.env.API_KEY}`,
+//         },
+//       }
+//     ).then((resposne) => resposne.json());
+//   });
+
+//   await Promise.all(FetchgamesPromises)
+//     .then((result) => {
+//       const TeamsInfo = [];
+//       result.forEach((team) => {
+//           const TeamInfo = {};
+//           TeamInfo.name = team.response[0].team.name;
+//           TeamInfo.logo = team.response[0].team.logo;
+//           TeamsInfo.push(TeamInfo);
+//       });
+//       return TeamsInfo;
+//     })
+//     .then((FinalArray) => res.send(FinalArray));
+// })
+
+// app.post("/user/favouriteTeams", async (req, res) => {
+//   try {
+//     const { teams, userID } = req.body;
+//     teams.forEach(async (team) => {
+//       await knex("favourite_teams").insert([{ teamId: team, user_id: userID }]);
+//     });
+//     res.status(200);
+//   } catch (error) {
+//   }
+// });
 
 app.post("/user/login", async (req, res) => {
   try {

@@ -21,7 +21,6 @@ const Navbar = (props) => {
 
   const location = useLocation();
 
-  console.log(setLogInOrRegister)
 
 
   const activeKey = location.pathname === "/" ? "/projects" : location.pathname;
@@ -70,7 +69,7 @@ const Navbar = (props) => {
         <Nav.Item>
           <Nav.Link
             as={Link}
-            to="/Guest/Teams"
+            to="/Guest/Teams/SelectLeague"
             onClick={() => {
               setNavState("Teams");
               setLeagueID(undefined);

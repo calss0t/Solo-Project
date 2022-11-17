@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import "../../styles/ChooseLeague.css";
 import moment from "moment";
+import Navbar from "../Navbar";
 
 export default function ChooseLeague({ setNavState }) {
   const [leagueArray, setLeagueArray] = useState([]);
@@ -68,23 +69,26 @@ export default function ChooseLeague({ setNavState }) {
   };
 
   return (
-    <div className="League_selection">
-      <h1 className="page_title">Choose a league to see the games</h1>
-      {leagueArray.length == 0 ? (
-        <h3>"Sorry, there are no movies with your current search options"</h3>
-      ) : (
-        leagueArray.map(renderCard)
-      )}
-      {<br></br>}
-      {<br></br>}
-      {<br></br>}
-      {<br></br>}
-      <div className="Submit_button">
-        <Button className="button" onClick={Submit}>
-          {" "}
-          Submit selection
-        </Button>
+    <>
+      <Navbar />
+      <div className="League_selection">
+        <h1 className="page_title">Choose a league to see the games</h1>
+        {leagueArray.length == 0 ? (
+          <h3>"Sorry, there are no movies with your current search options"</h3>
+        ) : (
+          leagueArray.map(renderCard)
+        )}
+        {<br></br>}
+        {<br></br>}
+        {<br></br>}
+        {<br></br>}
+        <div className="Submit_button">
+          <Button className="button" onClick={Submit}>
+            {" "}
+            Submit selection
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
