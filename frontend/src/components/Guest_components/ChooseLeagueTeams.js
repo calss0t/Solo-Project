@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import "../../styles/ChooseLeague.css";
+import Navbar from "../Navbar";
+import { Link } from "react-router-dom";
+
 
 export default function ChooseLeagueTeams({
   setLeagueID,
@@ -61,23 +64,26 @@ export default function ChooseLeagueTeams({
   };
 
   return (
-    <div className="League_selection">
-      <h1 className="page_title">First choose a league</h1>
-      {leagueArray.length == 0 ? (
-        <h3>"Sorry, there are no movies with your current search options"</h3>
-      ) : (
-        leagueArray.map(renderCard)
-      )}
-      {<br></br>}
-      {<br></br>}
-      {<br></br>}
-      {<br></br>}
-      <div className="Submit_button">
-        <Button className="button" onClick={Submit}>
-          {" "}
-          Submit selection
-        </Button>
+    <>
+      <Navbar />
+      <div className="League_selection">
+        <h1 className="page_title">First choose a league</h1>
+        {leagueArray.length == 0 ? (
+          <h3>"Sorry, there are no movies with your current search options"</h3>
+        ) : (
+          leagueArray.map(renderCard)
+        )}
+        {<br></br>}
+        {<br></br>}
+        {<br></br>}
+        {<br></br>}
+        <div className="Submit_button">
+          <Button as={Link} to="/Guest/Teams/SelectTeam" className="button" onClick={Submit}>
+            {" "}
+            Submit selection
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

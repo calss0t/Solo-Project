@@ -59,7 +59,7 @@
 
 
 .modal_2 {
-  z-index: 3; /* Sit on top */
+  z-index: 99999; /* Sit on top */
   --bs-modal-width: 1300px;
   width: 100%; /* Full width */
   height: 100%; /* Full height */

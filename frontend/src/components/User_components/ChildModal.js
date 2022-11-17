@@ -8,7 +8,7 @@ export default function ChildModal({ leagueId, ShowChildModal, setShowChildModal
 
   const [teamsArray, setTeamsArray] = useState([]);
 
-  const [teams, setTeams] = useState([]);
+  const [teamsIDs, setTeamsIDs] = useState([]);
 
   useEffect(() => {
     console.log(leagueId)
@@ -27,27 +27,6 @@ export default function ChildModal({ leagueId, ShowChildModal, setShowChildModal
     setShowChildModal(false);
   };
 
-  function submit() {
-    // const data = { name, sets, reps };
-    // (async () => {
-    //   const rawResponse = await fetch(
-    //     `/testing/ex/${localStorage.getItem("userid")}/${date}`,
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Accept: "*/*",
-    //         "Accept-Encoding": "gzip, deflate, br",
-    //         Connection: "keep-alive",
-    //         "Content-Length": 123,
-    //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-    //       },
-    //       body: JSON.stringify(data),
-    //     }
-    //   );
-    // })();
-    setShowChildModal(false);
-  }
 
   const renderCard = (card) => {
     return (
@@ -57,7 +36,7 @@ export default function ChildModal({ leagueId, ShowChildModal, setShowChildModal
             document
               .getElementById(`${card.id}top`)
               .classList.toggle("League_card_selected");
-            teams.push(card.id);
+              teamsIDs.push(card.id);
           }}
           className="League_Logo"
           alt={`${card.name} poster`}
@@ -69,7 +48,7 @@ export default function ChildModal({ leagueId, ShowChildModal, setShowChildModal
             document
               .getElementById(`${card.id}top`)
               .classList.toggle("League_card_selected");
-            teams.push(card.id);
+              teamsIDs.push(card.id);
           }}
           className="League_name"
         >
@@ -78,6 +57,29 @@ export default function ChildModal({ leagueId, ShowChildModal, setShowChildModal
       </Card>
     );
   };
+
+  function submit() {
+    console.log(teamsIDs)
+    const userID = localStorage.getItem("userid")
+    const teams = teamsIDs
+    const data = { teams, userID };
+    (async () => {
+        await fetch(`/user/addFavourite/teams`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "*/*",
+            "Accept-Encoding": "gzip, deflate, br",
+            Connection: "keep-alive",
+            "Content-Length": 123,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(data),
+        });
+      })();
+    setShowChildModal(false);
+  }
+
 
   return (
     <>

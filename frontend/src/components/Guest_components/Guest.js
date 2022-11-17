@@ -3,6 +3,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import Navbar from "./..//Navbar.js";
 
+import { Link, Routes, Route } from "react-router-dom";
+
+
 
 function Guest({setNavState, setLeagueID, setLeagueChosen, setTeamsChosen, navState, setLogInOrRegister, setTeamsSelected}) {
 
