@@ -7,9 +7,9 @@ import Image from "react-bootstrap/Image";
 import CalendarView from "./CalendarView";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import DeleteFavouriteLeague from "./DeleteFavouriteLeague";
+import DeleteFavouriteTeam from "./DeleteFavouriteTeam";
 
-// import FullCalendar from "@fullcalendar/react"; // must go before plugins
-// import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import AddLeague from "./AddLeague";
 import AddTeam from "./AddTeam";
 import ChildModal from "./ChildModal";
@@ -20,11 +20,13 @@ export default function Profile({ props }) {
   const [numLeaguesFollowing, setNumLeaguesFollowing] = useState(0);
   const [favouriteTeams, setFavouriteTeams] = useState(undefined);
   const [favouriteLeagues, setFavouriteLeagues] = useState(undefined);
-  const [LeagueModal, setLeagueModal] = useState(false);
-  const [TeamModal, setTeamModal] = useState(false);
 
   const [leagueModalShow, setLeagueModalShow] = useState(false);
   const [TeamModalShow, setTeamModalShow] = useState(false);
+
+  const [DeleteLeagueModalShow, setDeleteLeagueModalShow] = useState(false);
+  const [DeleteTeamModalShow, setDeleteTeamModalShow] = useState(false);
+
 
   const [leagueId, setLeagueID] = useState();
   const [favouriteLeaguesInfo, setFavouriteLeaguesInfo] = useState([]);
@@ -122,14 +124,21 @@ export default function Profile({ props }) {
 
   const AddLeaguefunction = () => {
     setLeagueModalShow(true);
-    setLeagueModal(true);
+  };
+
+  const DeleteLeaguefunction = () => {
+    setDeleteLeagueModalShow(true);
   };
 
   const AddTeamfunction = () => {
-    setTeamModal(true);
     setTeamModalShow(true);
-    console.log("test");
   };
+
+  const DeleteTeamfunction = () => {
+    setDeleteTeamModalShow(true);
+  };
+
+
 
   const renderfavourites = (card) => {
     return (
@@ -153,10 +162,10 @@ export default function Profile({ props }) {
               >
                 <div>
                   <img
-                    src="https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg"
+                    src="https://pbs.twimg.com/media/E8bU5ubVUAYwf2N.jpg"
                     alt="Generic placeholder image"
                     className="img-fluid img-thumbnail mt-4 mb-2"
-                    style={{ width: "150px", margin: "20px" }}
+                    style={{ width: "200px", margin: "20px", height: "150px" }}
                   />
                 </div>
                 <div className="ms-3" style={{ marginTop: "90px" }}>
@@ -197,11 +206,21 @@ export default function Profile({ props }) {
                     {" "}
                     Add a league
                   </button>
+                  <button
+                    as={Link}
+                    to="/User/DeleteLeague"
+                    onClick={() => {
+                      DeleteLeaguefunction();
+                    }}
+                  >
+                    {" "}
+                    Delete a league
+                  </button>
                   <p></p>
                   <p className="lead fw-normal mb-1">Favourite Teams</p>
                   <Container>
                     <Row className="Favourite_teams">
-                    {favouriteTeamsInfo.map(renderfavourites)}
+                      {favouriteTeamsInfo.map(renderfavourites)}
                     </Row>
                   </Container>
                   <button
@@ -211,6 +230,16 @@ export default function Profile({ props }) {
                   >
                     {" "}
                     Add a team
+                  </button>
+                  <button
+                    as={Link}
+                    to="/User/DeleteTeam"
+                    onClick={() => {
+                      DeleteTeamfunction();
+                    }}
+                  >
+                    {" "}
+                    Delete a team
                   </button>
                 </div>
 
@@ -223,24 +252,33 @@ export default function Profile({ props }) {
           </div>
         </div>
       </div>
-      {LeagueModal === true && (
-        <AddLeague show={leagueModalShow} setShow={setLeagueModalShow} />
-      )}
-      {TeamModal === true && (
-        <AddTeam
-          setShowChildModal={setShowChildModal}
-          setLeagueID={setLeagueID}
-          TeamModalShow={TeamModalShow}
-          setTeamModalShow={setTeamModalShow}
-        />
-      )}
-      {ShowChildModal === true && (
-        <ChildModal
-          leagueId={leagueId}
-          setShowChildModal={setShowChildModal}
-          ShowChildModal={ShowChildModal}
-        />
-      )}
+
+      <AddLeague show={leagueModalShow} setShow={setLeagueModalShow} />
+
+      <DeleteFavouriteLeague
+        favouriteLeaguesInfo={favouriteLeaguesInfo}
+        DeleteLeagueModalShow={DeleteLeagueModalShow}
+        setDeleteLeagueModalShow={setDeleteLeagueModalShow}
+      />
+
+      <DeleteFavouriteTeam
+        favouriteTeamsInfo={favouriteTeamsInfo}
+        DeleteTeamModalShow={DeleteTeamModalShow}
+        setDeleteTeamModalShow={setDeleteTeamModalShow}
+      />  
+
+      <AddTeam
+        setShowChildModal={setShowChildModal}
+        setLeagueID={setLeagueID}
+        TeamModalShow={TeamModalShow}
+        setTeamModalShow={setTeamModalShow}
+      />
+
+      <ChildModal
+        leagueId={leagueId}
+        setShowChildModal={setShowChildModal}
+        ShowChildModal={ShowChildModal}
+      />
     </>
   );
 }

@@ -10,18 +10,20 @@ export default function ChildModal({ leagueId, ShowChildModal, setShowChildModal
 
   const [teamsIDs, setTeamsIDs] = useState([]);
 
+
   useEffect(() => {
-    console.log(leagueId)
-    fetch("/soccer/teams", {
-      headers: {
-        leagueID: leagueId,
-      },
-    })
-      .then((res) => res.json())
-      .then((arr) => {
-        setTeamsArray(arr);
-      });
-  }, [leagueId]);
+    if(ShowChildModal===true){
+      fetch("/soccer/teams", {
+        headers: {
+          leagueID: leagueId,
+        },
+      })
+        .then((res) => res.json())
+        .then((arr) => {
+          setTeamsArray(arr);
+        });
+    }
+  }, [leagueId, ShowChildModal]);
 
   const closePopup = () => {
     setShowChildModal(false);

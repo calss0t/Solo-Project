@@ -323,6 +323,27 @@ app.post("/user/addFavourite/league" , authenticateToken, async (req,res) => {
   }
 })
 
+app.put("/user/deleteFavourite/League", authenticateToken, async (req,res)=> {
+  try {
+    const { leagueId, userID } = req.body;
+    console.log(leagueId, userID)
+      await knex("favourite_leagues").where('user_id', userID).andWhere("leagueId", leagueId).del()
+    res.status(200);
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+app.put("/user/deleteFavourite/Team", authenticateToken, async (req,res)=> {
+  try {
+    const { teamId, userID } = req.body;
+    console.log(teamId, userID)
+      await knex("favourite_teams").where('user_id', userID).andWhere("teamId", teamId).del()
+    res.status(200);
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 
 app.post("/user/addFavourite/teams" , authenticateToken, async (req,res) => {

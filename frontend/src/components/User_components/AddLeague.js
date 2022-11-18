@@ -7,8 +7,6 @@ import Modal from "react-bootstrap/Modal";
 
 
 export default function AddLeague({
-  setLeagueID,
-  setUserLeagueChosen,
   setShow,
   show
 }) {
