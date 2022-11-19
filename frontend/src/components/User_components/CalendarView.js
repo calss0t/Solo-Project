@@ -57,6 +57,7 @@ export default function CalendarView({ favouriteLeagues, favouriteTeams }) {
     const GamesArray = [];
     leaguegames.forEach((event) => {
       let obj = {
+        color: "282c34",
         textColor: "#282c34",
         id: `${event.idAPIfootball}`,
         title: `${event.name}`, // a property!
