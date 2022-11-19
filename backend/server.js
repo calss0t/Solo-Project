@@ -10,7 +10,7 @@ const axios = require("axios");
 
 app.get("/test", (req, res) => {
   fetch(
-    `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/searchteams.php?t=Arsenal`
+    `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventsnext.php?id=135256`
   )
     .then((resukt) => resukt.json())
     .then((result) => res.send(result));
@@ -18,7 +18,7 @@ app.get("/test", (req, res) => {
 
 app.get("/test2", (req, res) => {
   fetch(
-    `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventslast.php?id=133602`
+    `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventslast.php?id=135481`
   )
     .then((resukt) => resukt.json())
     .then((result) => res.send(result));
@@ -241,25 +241,29 @@ app.get("/Guest/Teams/Games", async (req, res) => {
       const TeamsGames = [];
       result.forEach((event) => {
         if (Object.keys(event)[0] === "events") {
-          event.events.forEach((singleEvent) => {
-            const TeamGame = {};
-            TeamGame.id = singleEvent.idEvent;
-            TeamGame.idAPIfootball = singleEvent.idAPIfootball;
-            TeamGame.name = singleEvent.strEvent;
-            TeamGame.timestamp = singleEvent.strTimestamp;
-            TeamGame.dateEvent = singleEvent.dateEvent;
-            TeamsGames.push(TeamGame);
-          });
+          if (event.events!== null) {
+            event.events.forEach((singleEvent) => {
+              const TeamGame = {};
+              TeamGame.id = singleEvent.idEvent;
+              TeamGame.idAPIfootball = singleEvent.idAPIfootball;
+              TeamGame.name = singleEvent.strEvent;
+              TeamGame.timestamp = singleEvent.strTimestamp;
+              TeamGame.dateEvent = singleEvent.dateEvent;
+              TeamsGames.push(TeamGame);
+            });
+          }
         } else if (Object.keys(event)[0] === "results") {
-          event.results.forEach((singleEvent) => {
-            const TeamGame = {};
-            TeamGame.id = singleEvent.idEvent;
-            TeamGame.idAPIfootball = singleEvent.idAPIfootball;
-            TeamGame.name = singleEvent.strEvent;
-            TeamGame.timestamp = singleEvent.strTimestamp;
-            TeamGame.dateEvent = singleEvent.dateEvent;
-            TeamsGames.push(TeamGame);
-          });
+          if (event.results!== null) {
+            event.results.forEach((singleEvent) => {
+              const TeamGame = {};
+              TeamGame.id = singleEvent.idEvent;
+              TeamGame.idAPIfootball = singleEvent.idAPIfootball;
+              TeamGame.name = singleEvent.strEvent;
+              TeamGame.timestamp = singleEvent.strTimestamp;
+              TeamGame.dateEvent = singleEvent.dateEvent;
+              TeamsGames.push(TeamGame);
+            });
+          }
         }
       });
       return TeamsGames;
