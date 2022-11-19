@@ -14,7 +14,6 @@ import { Link, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Guest_SignIn_Register from "./components/Guest_components/Guest_SignIn_Register.js";
 import Calendar from "./components/Guest_components/Calendar.js";
-import DeleteFavouriteLeague from "./components/User_components/DeleteFavouriteLeague.js";
 
 function App() {
   const [leagueIDLeagueBar, setLeagueIDLeagueBar] = useState(undefined);
@@ -50,7 +49,7 @@ function App() {
         >
           &times;
         </span>
-        {/* <div
+        <div
           name="league 1"
           className="hidden"
           id="wg-api-football-games"
@@ -66,7 +65,7 @@ function App() {
           data-modal-game="true"
           data-modal-standings="true"
           data-modal-show-logos="true"
-        ></div> */}
+        ></div>
       </div>
     </div>
   );
@@ -84,7 +83,7 @@ function App() {
         >
           &times;
         </span>
-        {/* <div
+        <div
           className="hidden"
           id="wg-api-football-game"
           data-host="v3.football.api-sports.io"
@@ -93,7 +92,7 @@ function App() {
           data-theme=""
           data-show-errors="false"
           data-show-logos="true"
-        ></div> */}
+        ></div>
       </div>
     </div>
   );
