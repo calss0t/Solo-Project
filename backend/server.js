@@ -10,7 +10,7 @@ const axios = require('axios');
 
 
 app.get("/test", (req,res) => {
-  fetch(`https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventsnext.php?id=133602`)
+  fetch(`https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/searchteams.php?t=Arsenal`)
   .then((resukt) => resukt.json())
   .then(result => res.send(result))
 })
@@ -200,7 +200,27 @@ app.get("/soccer/teams", (req, res) => {
     .catch((error) => console.log("error", error));
 });
 
+app.get("/user/Search/Teams", (req,res) => {
+  const teamName =  req.get("teamName");
+  fetch(`https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/searchteams.php?t=${teamName}`)
+  .then((response) => response.json())
+    .then((result) => {
+      const teamsArray = [];
+      result.teams.forEach((element) => {
+        teamInfo = {};
+        teamInfo.id = element.idTeam;
+        teamInfo.idAPIfootball = element.idAPIfootball
+        teamInfo.name = element.strTeam;
+        teamInfo.description = element.strDescriptionEN
+        teamInfo.logo = element.strTeamBadge + "/preview";
+        teamsArray.push(teamInfo);
+      });
+      return teamsArray;
+    })
+    .then((resultArray) => res.send(resultArray))
+    .catch((error) => console.log("error", error));
 
+})
 
 app.get("/soccer/games", async (req, res) => {
   const teamIDs = req.get("teamIDs");

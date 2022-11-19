@@ -7,6 +7,11 @@ import Image from "react-bootstrap/Image";
 import CalendarView from "./CalendarView";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import Card from "react-bootstrap/Card";
+import Stack from "react-bootstrap/Stack";
+import Button from "react-bootstrap/Button";
+
+
 import DeleteFavouriteLeague from "./DeleteFavouriteLeague";
 import DeleteFavouriteTeam from "./DeleteFavouriteTeam";
 
@@ -26,7 +31,6 @@ export default function Profile({ props }) {
 
   const [DeleteLeagueModalShow, setDeleteLeagueModalShow] = useState(false);
   const [DeleteTeamModalShow, setDeleteTeamModalShow] = useState(false);
-
 
   const [leagueId, setLeagueID] = useState();
   const [favouriteLeaguesInfo, setFavouriteLeaguesInfo] = useState([]);
@@ -138,12 +142,20 @@ export default function Profile({ props }) {
     setDeleteTeamModalShow(true);
   };
 
-
-
   const renderfavourites = (card) => {
     return (
-      <Col key={card.id} className="Games-Teams-Home">
-        <Image className="Favourite_teams_Pictures" src={card.badge} />
+      <Col key={card.id}>
+        <Card key={card.id} id={card.id + "top"} className="Favourite_card">
+          <Card.Img
+            className="Favourite_teams_Pictures"
+            alt={`${card.name} poster`}
+            src={card.badge}
+          ></Card.Img>
+          {<br></br>}
+          <Card.Title className="Favourite_name">{card.name}</Card.Title>
+        </Card>
+        {/* <Image className="Favourite_teams_Pictures" src={card.badge} />
+        {card.name} */}
       </Col>
     );
   };
@@ -192,46 +204,45 @@ export default function Profile({ props }) {
                 <div className="mb-5">
                   <p className="lead fw-normal mb-1">Favourite Leagues</p>
                   <Container>
-                    <Row className="Favourite_teams">
-                      {favouriteLeaguesInfo.map(renderfavourites)}
-                    </Row>
+                    <Row>{favouriteLeaguesInfo.map(renderfavourites)}</Row>
                   </Container>
-                  <button
-                    as={Link}
-                    to="/User/Addleague"
-                    onClick={() => {
-                      AddLeaguefunction();
-                    }}
-                  >
-                    {" "}
-                    Add a league
-                  </button>
-                  <button
-                    as={Link}
-                    to="/User/DeleteLeague"
-                    onClick={() => {
-                      DeleteLeaguefunction();
-                    }}
-                  >
-                    {" "}
-                    Delete a league
-                  </button>
+                  <Stack direction="horizontal" gap={5}>
+                  <Button variant="outline-primary"
+                      as={Link}
+                      to="/User/Addleague"
+                      onClick={() => {
+                        AddLeaguefunction();
+                      }}
+                    >
+                      {" "}
+                      Add a league
+                    </Button>
+                    <Button variant="outline-primary"
+                      as={Link}
+                      to="/User/DeleteLeague"
+                      onClick={() => {
+                        DeleteLeaguefunction();
+                      }}
+                    >
+                      {" "}
+                      Delete a league
+                    </Button>
+                  </Stack>
                   <p></p>
                   <p className="lead fw-normal mb-1">Favourite Teams</p>
                   <Container>
-                    <Row className="Favourite_teams">
-                      {favouriteTeamsInfo.map(renderfavourites)}
-                    </Row>
+                    <Row>{favouriteTeamsInfo.map(renderfavourites)}</Row>
                   </Container>
-                  <button
+                  <Stack direction="horizontal" gap={5}>
+                  <Button variant="outline-primary"
                     onClick={() => {
                       AddTeamfunction();
                     }}
                   >
                     {" "}
                     Add a team
-                  </button>
-                  <button
+                  </Button>
+                  <Button variant="outline-primary"
                     as={Link}
                     to="/User/DeleteTeam"
                     onClick={() => {
@@ -240,7 +251,8 @@ export default function Profile({ props }) {
                   >
                     {" "}
                     Delete a team
-                  </button>
+                  </Button>
+                  </Stack>
                 </div>
 
                 <CalendarView
@@ -265,7 +277,7 @@ export default function Profile({ props }) {
         favouriteTeamsInfo={favouriteTeamsInfo}
         DeleteTeamModalShow={DeleteTeamModalShow}
         setDeleteTeamModalShow={setDeleteTeamModalShow}
-      />  
+      />
 
       <AddTeam
         setShowChildModal={setShowChildModal}
