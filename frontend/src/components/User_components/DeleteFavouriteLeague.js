@@ -6,6 +6,7 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import Card from "react-bootstrap/Card";
 
 export default function DeleteFavouriteLeague({
   favouriteLeaguesInfo,
@@ -16,18 +17,37 @@ export default function DeleteFavouriteLeague({
 
   const renderfavourites = (card) => {
     return (
-      <Col id={card.id + "top"} key={card.id} className="League_card">
-        <Image
-          key={card.id}
-          onClick={() => {
-            document
-              .getElementById(`${card.id}top`)
-              .classList.toggle("League_card_selected");
-            setChosenLeagueID(card.id);
-          }}
-          className="Favourite_teams_Pictures"
-          src={card.badge}
-        />
+      //   <Col id={card.id + "top"} key={card.id} className="League_card">
+      //     <Image
+      //       key={card.id}
+      //       onClick={() => {
+      //         document
+      //           .getElementById(`${card.id}top`)
+      //           .classList.toggle("League_card_selected");
+      //         setChosenLeagueID(card.id);
+      //       }}
+      //       className="Favourite_teams_Pictures"
+      //       src={card.badge}
+      //     />
+      //   </Col>
+      <Col key={card.id}>
+        <Card key={card.id} id={card.id + "top1"} className="Favourite_card">
+          <Card.Img
+            className="Favourite_teams_Pictures"
+            alt={`${card.name} poster`}
+            src={card.badge}
+            onClick={() => {
+                      document
+                        .getElementById(`${card.id}top1`)
+                        .classList.toggle("Favourite_card_selected");
+                      setChosenLeagueID(card.id);
+                    }}
+          ></Card.Img>
+          {<br></br>}
+          <Card.Title className="Favourite_name">{card.name}</Card.Title>
+        </Card>
+        {/* <Image className="Favourite_teams_Pictures" src={card.badge} />
+            {card.name} */}
       </Col>
     );
   };

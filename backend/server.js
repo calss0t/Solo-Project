@@ -6,22 +6,23 @@ const knex = require("./knex"); // Maybe I will have to change this
 const PORT = process.env.PORT || 8080;
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "./.env.local" });
-const axios = require('axios');
+const axios = require("axios");
 
+app.get("/test", (req, res) => {
+  fetch(
+    `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/searchteams.php?t=Arsenal`
+  )
+    .then((resukt) => resukt.json())
+    .then((result) => res.send(result));
+});
 
-app.get("/test", (req,res) => {
-  fetch(`https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/searchteams.php?t=Arsenal`)
-  .then((resukt) => resukt.json())
-  .then(result => res.send(result))
-})
-
-
-
-app.get("/test2", (req,res) => {
-  fetch(`https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventslast.php?id=133602`)
-  .then((resukt) => resukt.json())
-  .then(result => res.send(result))
-})
+app.get("/test2", (req, res) => {
+  fetch(
+    `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventslast.php?id=133602`
+  )
+    .then((resukt) => resukt.json())
+    .then((result) => res.send(result));
+});
 
 const path = require("path");
 app.use(express.static(path.resolve(__dirname, "../frontend/build")));
@@ -29,35 +30,37 @@ app.use(express.static(path.resolve(__dirname, "../frontend/build")));
 app.use(express.json());
 
 function authenticateToken(req, res, next) {
-  const token = req.headers["authorization"].split(' ')[1];
+  const token = req.headers["authorization"].split(" ")[1];
 
-  if (token == null) return res.sendStatus(401)
+  if (token == null) return res.sendStatus(401);
   jwt.verify(token, process.env.SECRET_TOKEN, (err, user) => {
-    if (err) return res.sendStatus(403)
-    req.user = user
-    next()
-  })
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
 }
-
 
 app.get("/", (req, res) => {
   res.status(200);
   res.send(`name of DB User: ${process.env.DB_USER}`);
 });
 
-app.get("/user/favourites/Leagues/Info", authenticateToken, async (req,res) => {
-  const leagues = req.get("leagues");
-  const leaguesArray = leagues.split(",")
-  const FetchLeagueInfoPromises = leaguesArray.map((ID) => {
-    return fetch(
-      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/lookupleague.php?id=${ID}`,
-    ).then((resposne) => resposne.json());
-  });
+app.get(
+  "/user/favourites/Leagues/Info",
+  authenticateToken,
+  async (req, res) => {
+    const leagues = req.get("leagues");
+    const leaguesArray = leagues.split(",");
+    const FetchLeagueInfoPromises = leaguesArray.map((ID) => {
+      return fetch(
+        `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/lookupleague.php?id=${ID}`
+      ).then((resposne) => resposne.json());
+    });
 
-  await Promise.all(FetchLeagueInfoPromises)
-    .then((result) => {
-      const LeaguesInfo = [];
-      result.forEach((league) => {
+    await Promise.all(FetchLeagueInfoPromises)
+      .then((result) => {
+        const LeaguesInfo = [];
+        result.forEach((league) => {
           const LeagueInfo = {};
           LeagueInfo.id = league.leagues[0].idLeague;
           LeagueInfo.idAPIfootball = league.leagues[0].idAPIfootball;
@@ -65,18 +68,19 @@ app.get("/user/favourites/Leagues/Info", authenticateToken, async (req,res) => {
           LeagueInfo.description = league.leagues[0].strDescriptionEN;
           LeagueInfo.badge = league.leagues[0].strBadge + "/preview";
           LeaguesInfo.push(LeagueInfo);
-      });
-      return LeaguesInfo;
-    })
-    .then((FinalArray) => res.send(FinalArray));
-})
+        });
+        return LeaguesInfo;
+      })
+      .then((FinalArray) => res.send(FinalArray));
+  }
+);
 
-app.get("/user/favourites/Teams/Info", authenticateToken, async (req,res) => {
+app.get("/user/favourites/Teams/Info", authenticateToken, async (req, res) => {
   const teams = req.get("teams");
-  const teamsArray = teams.split(",")
+  const teamsArray = teams.split(",");
   const FetchTeamsInfoPromises = teamsArray.map((ID) => {
     return fetch(
-      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/lookupteam.php?id=${ID}`,
+      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/lookupteam.php?id=${ID}`
     ).then((resposne) => resposne.json());
   });
 
@@ -84,30 +88,34 @@ app.get("/user/favourites/Teams/Info", authenticateToken, async (req,res) => {
     .then((result) => {
       const TeamsInfo = [];
       result.forEach((team) => {
-          const TeamInfo = {};
-          TeamInfo.id = team.teams[0].idTeam;
-          TeamInfo.idAPIfootball = team.teams[0].idAPIfootball;
-          TeamInfo.name = team.teams[0].strTeam;
-          TeamInfo.description = team.teams[0].strDescriptionEN;
-          TeamInfo.badge = team.teams[0].strTeamBadge + "/preview";
-          TeamsInfo.push(TeamInfo);
+        const TeamInfo = {};
+        TeamInfo.id = team.teams[0].idTeam;
+        TeamInfo.idAPIfootball = team.teams[0].idAPIfootball;
+        TeamInfo.name = team.teams[0].strTeam;
+        TeamInfo.description = team.teams[0].strDescriptionEN;
+        TeamInfo.badge = team.teams[0].strTeamBadge + "/preview";
+        TeamsInfo.push(TeamInfo);
       });
       return TeamsInfo;
     })
     .then((FinalArray) => res.send(FinalArray));
-})
+});
 
-app.get("/user/favourites/Leagues/Games", async (req,res) => {
+app.get("/user/favourites/Leagues/Games", async (req, res) => {
   const leagues = req.get("leagues");
-  const leaguesArray = leagues.split(",")
-  const FetchLeagueGamesPromises = []
+  const leaguesArray = leagues.split(",");
+  const FetchLeagueGamesPromises = [];
   await leaguesArray.forEach((ID) => {
-    FetchLeagueGamesPromises.push(fetch(
-      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventsnextleague.php?id=${ID}`,
-    ).then((resposne) => resposne.json()))
-    FetchLeagueGamesPromises.push(fetch(
-      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventspastleague.php?id=${ID}`,
-    ).then((resposne) => resposne.json()))
+    FetchLeagueGamesPromises.push(
+      fetch(
+        `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventsnextleague.php?id=${ID}`
+      ).then((resposne) => resposne.json())
+    );
+    FetchLeagueGamesPromises.push(
+      fetch(
+        `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventspastleague.php?id=${ID}`
+      ).then((resposne) => resposne.json())
+    );
   });
 
   await Promise.all(FetchLeagueGamesPromises)
@@ -122,31 +130,35 @@ app.get("/user/favourites/Leagues/Games", async (req,res) => {
           LeagueGame.timestamp = singleEvent.strTimestamp;
           LeagueGame.dateEvent = singleEvent.dateEvent;
           LeaguesGames.push(LeagueGame);
-        })
+        });
       });
       return LeaguesGames;
     })
     .then((FinalArray) => res.send(FinalArray));
-})
+});
 
-app.get("/user/favourites/Teams/Games", async (req,res) => {
+app.get("/user/favourites/Teams/Games", async (req, res) => {
   const teams = req.get("teams");
-  const TeamsArray = teams.split(",")
-  const FetchTeamsGamesPromises = []
+  const TeamsArray = teams.split(",");
+  const FetchTeamsGamesPromises = [];
   await TeamsArray.forEach((ID) => {
-    FetchTeamsGamesPromises.push(fetch(
-      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventsnext.php?id=${ID}`,
-    ).then((resposne) => resposne.json()))
-    FetchTeamsGamesPromises.push(fetch(
-      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventslast.php?id=${ID}`,
-    ).then((resposne) => resposne.json()))
+    FetchTeamsGamesPromises.push(
+      fetch(
+        `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventsnext.php?id=${ID}`
+      ).then((resposne) => resposne.json())
+    );
+    FetchTeamsGamesPromises.push(
+      fetch(
+        `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventslast.php?id=${ID}`
+      ).then((resposne) => resposne.json())
+    );
   });
 
   await Promise.all(FetchTeamsGamesPromises)
     .then((result) => {
       const TeamsGames = [];
       result.forEach((event) => {
-        if(Object.keys(event)[0] === "events"){
+        if (Object.keys(event)[0] === "events") {
           event.events.forEach((singleEvent) => {
             const TeamGame = {};
             TeamGame.id = singleEvent.idEvent;
@@ -155,9 +167,8 @@ app.get("/user/favourites/Teams/Games", async (req,res) => {
             TeamGame.timestamp = singleEvent.strTimestamp;
             TeamGame.dateEvent = singleEvent.dateEvent;
             TeamsGames.push(TeamGame);
-          })
-        }
-        else if(Object.keys(event)[0] === "results"){
+          });
+        } else if (Object.keys(event)[0] === "results") {
           event.results.forEach((singleEvent) => {
             const TeamGame = {};
             TeamGame.id = singleEvent.idEvent;
@@ -166,13 +177,95 @@ app.get("/user/favourites/Teams/Games", async (req,res) => {
             TeamGame.timestamp = singleEvent.strTimestamp;
             TeamGame.dateEvent = singleEvent.dateEvent;
             TeamsGames.push(TeamGame);
-          })
+          });
         }
       });
       return TeamsGames;
     })
     .then((FinalArray) => res.send(FinalArray));
-})
+});
+
+app.get("/Guest/League/Games", async (req, res) => {
+  const leagueID = req.get("leagueID");
+  console.log("leagueID", leagueID)
+  const FetchLeagueGamesPromises = [];
+  FetchLeagueGamesPromises.push(
+    fetch(
+      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventsnextleague.php?id=${leagueID}`
+    ).then((resposne) => resposne.json())
+  );
+  FetchLeagueGamesPromises.push(
+    fetch(
+      `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventspastleague.php?id=${leagueID}`
+    ).then((resposne) => resposne.json())
+  );
+
+  await Promise.all(FetchLeagueGamesPromises)
+    .then((result) => {
+      const LeaguesGames = [];
+      result.forEach((event) => {
+        event.events.forEach((singleEvent) => {
+          const LeagueGame = {};
+          LeagueGame.id = singleEvent.idEvent;
+          LeagueGame.idAPIfootball = singleEvent.idAPIfootball;
+          LeagueGame.name = singleEvent.strEvent;
+          LeagueGame.timestamp = singleEvent.strTimestamp;
+          LeagueGame.dateEvent = singleEvent.dateEvent;
+          LeaguesGames.push(LeagueGame);
+        });
+      });
+      return LeaguesGames;
+    })
+    .then((FinalArray) => res.send(FinalArray));
+});
+
+app.get("/Guest/Teams/Games", async (req, res) => {
+  const teams = req.get("teams");
+  const TeamsArray = teams.split(",");
+  const FetchTeamsGamesPromises = [];
+  await TeamsArray.forEach((ID) => {
+    FetchTeamsGamesPromises.push(
+      fetch(
+        `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventsnext.php?id=${ID}`
+      ).then((resposne) => resposne.json())
+    );
+    FetchTeamsGamesPromises.push(
+      fetch(
+        `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/eventslast.php?id=${ID}`
+      ).then((resposne) => resposne.json())
+    );
+  });
+
+  await Promise.all(FetchTeamsGamesPromises)
+    .then((result) => {
+      const TeamsGames = [];
+      result.forEach((event) => {
+        if (Object.keys(event)[0] === "events") {
+          event.events.forEach((singleEvent) => {
+            const TeamGame = {};
+            TeamGame.id = singleEvent.idEvent;
+            TeamGame.idAPIfootball = singleEvent.idAPIfootball;
+            TeamGame.name = singleEvent.strEvent;
+            TeamGame.timestamp = singleEvent.strTimestamp;
+            TeamGame.dateEvent = singleEvent.dateEvent;
+            TeamsGames.push(TeamGame);
+          });
+        } else if (Object.keys(event)[0] === "results") {
+          event.results.forEach((singleEvent) => {
+            const TeamGame = {};
+            TeamGame.id = singleEvent.idEvent;
+            TeamGame.idAPIfootball = singleEvent.idAPIfootball;
+            TeamGame.name = singleEvent.strEvent;
+            TeamGame.timestamp = singleEvent.strTimestamp;
+            TeamGame.dateEvent = singleEvent.dateEvent;
+            TeamsGames.push(TeamGame);
+          });
+        }
+      });
+      return TeamsGames;
+    })
+    .then((FinalArray) => res.send(FinalArray));
+});
 
 app.get("/soccer/leagues", async (req, res) => {
   const leagues = await knex.select("*").from("leagues");
@@ -181,16 +274,18 @@ app.get("/soccer/leagues", async (req, res) => {
 
 app.get("/soccer/teams", (req, res) => {
   const leagueID = req.get("leagueID");
-  fetch(`https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/lookup_all_teams.php?id=${leagueID}`)
+  fetch(
+    `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/lookup_all_teams.php?id=${leagueID}`
+  )
     .then((response) => response.json())
     .then((result) => {
       const teamsArray = [];
       result.teams.forEach((element) => {
         teamInfo = {};
         teamInfo.id = element.idTeam;
-        teamInfo.idAPIfootball = element.idAPIfootball
+        teamInfo.idAPIfootball = element.idAPIfootball;
         teamInfo.name = element.strTeam;
-        teamInfo.description = element.strDescriptionEN
+        teamInfo.description = element.strDescriptionEN;
         teamInfo.logo = element.strTeamBadge + "/preview";
         teamsArray.push(teamInfo);
       });
@@ -200,18 +295,20 @@ app.get("/soccer/teams", (req, res) => {
     .catch((error) => console.log("error", error));
 });
 
-app.get("/user/Search/Teams", (req,res) => {
-  const teamName =  req.get("teamName");
-  fetch(`https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/searchteams.php?t=${teamName}`)
-  .then((response) => response.json())
+app.get("/user/Search/Teams", (req, res) => {
+  const teamName = req.get("teamName");
+  fetch(
+    `https://www.thesportsdb.com/api/v1/json/${process.env.API_TheSportsDB_KEY}/searchteams.php?t=${teamName}`
+  )
+    .then((response) => response.json())
     .then((result) => {
       const teamsArray = [];
       result.teams.forEach((element) => {
         teamInfo = {};
         teamInfo.id = element.idTeam;
-        teamInfo.idAPIfootball = element.idAPIfootball
+        teamInfo.idAPIfootball = element.idAPIfootball;
         teamInfo.name = element.strTeam;
-        teamInfo.description = element.strDescriptionEN
+        teamInfo.description = element.strDescriptionEN;
         teamInfo.logo = element.strTeamBadge + "/preview";
         teamsArray.push(teamInfo);
       });
@@ -219,8 +316,7 @@ app.get("/user/Search/Teams", (req,res) => {
     })
     .then((resultArray) => res.send(resultArray))
     .catch((error) => console.log("error", error));
-
-})
+});
 
 app.get("/soccer/games", async (req, res) => {
   const teamIDs = req.get("teamIDs");
@@ -258,17 +354,15 @@ app.get("/soccer/games", async (req, res) => {
     .then((FinalArray) => res.send(FinalArray));
 });
 
-app.get("/user/Info", authenticateToken, async (req,res) => {
+app.get("/user/Info", authenticateToken, async (req, res) => {
   try {
     const userID = req.get("userID");
     if (userID === undefined) {
       res.status(500).json({ message: "Internal Server Error" });
       return;
     }
-    const data = await knex("users")
-      .select("*")
-      .where({ id: userID });
-      
+    const data = await knex("users").select("*").where({ id: userID });
+
     if (data.length > 0) {
       res.status(200).json(data);
       return;
@@ -278,7 +372,7 @@ app.get("/user/Info", authenticateToken, async (req,res) => {
   } catch (error) {
     res.status(500);
   }
-})
+});
 
 app.get("/user/Teams", authenticateToken, async (req, res) => {
   try {
@@ -304,8 +398,6 @@ app.get("/user/Teams", authenticateToken, async (req, res) => {
     res.status(500);
   }
 });
-
-
 
 app.get("/user/Leagues", authenticateToken, async (req, res) => {
   try {
@@ -333,50 +425,59 @@ app.get("/user/Leagues", authenticateToken, async (req, res) => {
   }
 });
 
-app.post("/user/addFavourite/league" , authenticateToken, async (req,res) => {
+app.post("/user/addFavourite/league", authenticateToken, async (req, res) => {
   try {
     const { leagueId, userID } = req.body;
-      await knex("favourite_leagues").insert([{ leagueId: leagueId, user_id: userID }]);
+    await knex("favourite_leagues").insert([
+      { leagueId: leagueId, user_id: userID },
+    ]);
     res.status(200);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-})
+});
 
-app.put("/user/deleteFavourite/League", authenticateToken, async (req,res)=> {
+app.put("/user/deleteFavourite/League", authenticateToken, async (req, res) => {
   try {
     const { leagueId, userID } = req.body;
-    console.log(leagueId, userID)
-      await knex("favourite_leagues").where('user_id', userID).andWhere("leagueId", leagueId).del()
+    console.log(leagueId, userID);
+    await knex("favourite_leagues")
+      .where("user_id", userID)
+      .andWhere("leagueId", leagueId)
+      .del();
     res.status(200);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-})
+});
 
-app.put("/user/deleteFavourite/Team", authenticateToken, async (req,res)=> {
+app.put("/user/deleteFavourite/Team", authenticateToken, async (req, res) => {
   try {
     const { teamId, userID } = req.body;
-    console.log(teamId, userID)
-      await knex("favourite_teams").where('user_id', userID).andWhere("teamId", teamId).del()
+    console.log(teamId, userID);
+    await knex("favourite_teams")
+      .where("user_id", userID)
+      .andWhere("teamId", teamId)
+      .del();
     res.status(200);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-})
+});
 
-
-app.post("/user/addFavourite/teams" , authenticateToken, async (req,res) => {
+app.post("/user/addFavourite/teams", authenticateToken, async (req, res) => {
   try {
     const { teams, userID } = req.body;
     teams.forEach(async (teamID) => {
-      await knex("favourite_teams").insert([{ teamId: teamID, user_id: userID }])
-    })
+      await knex("favourite_teams").insert([
+        { teamId: teamID, user_id: userID },
+      ]);
+    });
     res.status(200);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-})
+});
 
 // app.get("/user/teams/info", async(req,res) => {
 //   const teamIDs = req.get("teamIDs");
