@@ -4,16 +4,29 @@ import Card from "react-bootstrap/Card";
 import "../../styles/ChooseLeague.css";
 import Navbar from "../Navbar";
 import { Link } from "react-router-dom";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 
 
 export default function ChooseLeagueTeams({
   setLeagueID,
   setLeagueChosen,
   setNavState,
+  setTeamsSelected
 }) {
   const [leagueArray, setLeagueArray] = useState([]);
 
   const [ChosenLeagueID, setChosenLeagueID] = useState([]);
+
+  
+  const [searchBar, setsearchBar] = useState("");
+
+  const [SearchDisplay, setSearchDisplay] = useState(false);
+  const [searchedTeams, setSearchedTeams] = useState([])
+
+  const [teamsIDs, setTeamsIDs] = useState([]);
+
+
 
   useEffect(() => {
     fetch("/soccer/leagues")
@@ -63,6 +76,53 @@ export default function ChooseLeagueTeams({
     setNavState("Teams");
   };
 
+  
+  const renderSearch = (card) => {
+    return (
+      <Card key={card.id} id={card.id + "top"} className="League_card">
+        <Card.Img
+          onClick={() => {
+            document
+              .getElementById(`${card.id}top`)
+              .classList.toggle("League_card_selected");
+              teamsIDs.push(card.id);
+          }}
+          className="League_Logo"
+          alt={`${card.name} poster`}
+          src={card.logo}
+        ></Card.Img>
+        {<br></br>}
+        <Card.Title
+          onClick={() => {
+            document
+              .getElementById(`${card.id}top`)
+              .classList.toggle("League_card_selected");
+              teamsIDs.push(card.id);
+          }}
+          className="League_name"
+        >
+          {card.name}
+        </Card.Title>
+      </Card>
+    );
+  };
+
+  const Search = async () => {
+    await fetch("/user/Search/Teams", {
+      headers: {
+        teamName: searchBar,
+      },
+    })
+      .then((res) => res.json())
+      .then((arr) => {
+        setSearchedTeams(arr)
+      });
+  };
+
+  const SubmitSearch = () => {
+    setTeamsSelected(teamsIDs)
+  }
+
   return (
     <>
       <Navbar />
@@ -83,7 +143,44 @@ export default function ChooseLeagueTeams({
             Submit selection
           </Button>
         </div>
-      </div>
+        {<br></br>}
+          {<br></br>}
+          <h1 className="page_title">Or search your for team directly here</h1>
+          <InputGroup className="mb-3">
+            <Form.Control
+              type="search"
+              name="search_team"
+              placeholder="Search for your favourite team"
+              value={searchBar}
+              onChange={(e) => {
+                setsearchBar(e.target.value);
+              }}
+            />
+            <InputGroup.Text
+              className="search_button"
+              onClick={() => {
+                setSearchDisplay(true);
+                Search()
+                console.log(searchBar);
+              }}
+            >
+              Search
+            </InputGroup.Text>
+          </InputGroup>
+          {<br></br>}
+          {<br></br>}
+          {<br></br>}
+          {SearchDisplay === true && searchedTeams.map(renderSearch)}
+          {<br></br>}
+          {<br></br>}
+          {<br></br>}
+          <div className="Submit_button">
+            <Button as={Link} to="/Guest/calendar" onClick={SubmitSearch}>Go to Calendar</Button>
+          </div>
+          {<br></br>}
+          {<br></br>}
+          {<br></br>}
+        </div>
     </>
   );
 }

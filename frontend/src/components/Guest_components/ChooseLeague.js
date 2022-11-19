@@ -4,8 +4,10 @@ import Card from "react-bootstrap/Card";
 import "../../styles/ChooseLeague.css";
 import moment from "moment";
 import Navbar from "../Navbar";
+import { Link } from "react-router-dom";
 
-export default function ChooseLeague({ setNavState }) {
+
+export default function ChooseLeague({ setLeagueIDLeagueBar }) {
   const [leagueArray, setLeagueArray] = useState([]);
 
   const [ChosenLeagueID, setChosenLeagueID] = useState([]);
@@ -21,16 +23,16 @@ export default function ChooseLeague({ setNavState }) {
   const renderCard = (card) => {
     return (
       <Card
-        key={card.league_Id}
-        id={card.league_Id + "top"}
+        key={card.League_Id_TheSportsDB}
+        id={card.League_Id_TheSportsDB + "top"}
         className="League_card"
       >
         <Card.Img
           onClick={() => {
             document
-              .getElementById(`${card.league_Id}top`)
+              .getElementById(`${card.League_Id_TheSportsDB}top`)
               .classList.toggle("League_card_selected");
-            setChosenLeagueID(card.league_Id);
+            setChosenLeagueID(card.League_Id_TheSportsDB);
           }}
           className="League_Logo"
           alt={`${card.league_name} poster`}
@@ -40,9 +42,9 @@ export default function ChooseLeague({ setNavState }) {
         <Card.Title
           onClick={() => {
             document
-              .getElementById(`${card.league_Id}top`)
+              .getElementById(`${card.League_Id_TheSportsDB}top`)
               .classList.toggle("League_card_selected");
-            setChosenLeagueID(card.league_Id);
+            setChosenLeagueID(card.League_Id_TheSportsDB);
           }}
           className="League_name"
         >
@@ -52,20 +54,8 @@ export default function ChooseLeague({ setNavState }) {
     );
   };
 
-  const Submit = async () => {
-    document.getElementById("league-modal").classList.remove("hidden");
-    document.getElementById("myModal").style.display = "block";
-    let standings = document.getElementById("wg-api-football-games");
-    standings.setAttribute("data-league", ChosenLeagueID);
-    standings.setAttribute("data-date", `${moment().format("YYYY-MM-DD")}`);
-    document.getElementById("wg-api-football-games").classList.remove("hidden");
-    window.document.dispatchEvent(
-      new Event("DOMContentLoaded", {
-        bubbles: true,
-        cancelable: true,
-      })
-    );
-    setNavState("Leagues");
+  const Submit = () => {
+    setLeagueIDLeagueBar(ChosenLeagueID)
   };
 
   return (
@@ -83,9 +73,9 @@ export default function ChooseLeague({ setNavState }) {
         {<br></br>}
         {<br></br>}
         <div className="Submit_button">
-          <Button className="button" onClick={Submit}>
+          <Button className="button" as={Link} to="/Guest/calendar" onClick={Submit}>
             {" "}
-            Submit selection
+            Go to Calendar
           </Button>
         </div>
       </div>

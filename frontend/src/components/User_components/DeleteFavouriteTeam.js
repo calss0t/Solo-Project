@@ -6,26 +6,46 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import Card from "react-bootstrap/Card";
 
 export default function DeleteFavouriteTeam({
-    favouriteTeamsInfo,
-    DeleteTeamModalShow,
-    setDeleteTeamModalShow,
+  favouriteTeamsInfo,
+  DeleteTeamModalShow,
+  setDeleteTeamModalShow,
 }) {
   const [ChosenTeamID, setChosenTeamID] = useState();
-  
+
   const renderfavourites = (card) => {
     return (
-      <Col  id={card.id + "top"} key={card.id} className="League_card">
-        <Image  key={card.id} onClick={() => {
+      <Col>
+        <Card key={card.id} id={card.id + "top1"} className="Favourite_card">
+          <Card.Img
+            className="Favourite_teams_Pictures"
+            alt={`${card.name} poster`}
+            src={card.badge}
+            onClick={() => {
+              document
+                .getElementById(`${card.id}top1`)
+                .classList.toggle("Favourite_card_selected");
+              setChosenTeamID(card.id);
+            }}
+          ></Card.Img>
+          {<br></br>}
+          <Card.Title className="Favourite_name">{card.name}</Card.Title>
+        </Card>
+        {/* <Image  key={card.id} onClick={() => {
         document
           .getElementById(`${card.id}top`)
           .classList.toggle("League_card_selected");
           setChosenTeamID(card.id);
-      }} className="Favourite_teams_Pictures" src={card.badge} />
+      }} className="Favourite_teams_Pictures" src={card.badge} /> */}
       </Col>
     );
   };
+
+  useEffect(()=> {
+
+  },[ChosenTeamID])
 
   const Submit = () => {
     const userID = localStorage.getItem("userid");

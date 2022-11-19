@@ -13,8 +13,11 @@ import { Link, Routes, Route } from "react-router-dom";
 
 import "./App.css";
 import Guest_SignIn_Register from "./components/Guest_components/Guest_SignIn_Register.js";
+import Calendar from "./components/Guest_components/Calendar.js";
+import DeleteFavouriteLeague from "./components/User_components/DeleteFavouriteLeague.js";
 
 function App() {
+  const [leagueIDLeagueBar, setLeagueIDLeagueBar] = useState(undefined);
   const [leagueID, setLeagueID] = useState(undefined);
   const [leagueChosen, setLeagueChosen] = useState(false);
   const [teamsSelected, setTeamsSelected] = useState([]);
@@ -22,6 +25,7 @@ function App() {
   const [navState, setNavState] = useState("Leagues");
   const [logInOrRegister, setLogInOrRegister] = useState(false);
   const [guest, setGuest] = useState(false);
+
 
   window.onclick = function (event) {
     if (event.target == document.getElementById("myModal")) {
@@ -188,6 +192,7 @@ function App() {
               setLeagueID={setLeagueID}
               setNavState={setNavState}
               setLeagueChosen={setLeagueChosen}
+              setTeamsSelected={setTeamsSelected}
             />
           }
         ></Route>
@@ -211,7 +216,12 @@ function App() {
         <Route
           exact
           path="/Guest/Leagues"
-          element={<ChooseLeague setNavState={setNavState} />}
+          element={<ChooseLeague setNavState={setNavState} setLeagueIDLeagueBar={setLeagueIDLeagueBar}/>}
+        ></Route>
+        <Route
+          exact
+          path="/Guest/calendar"
+          element={<Calendar leagueIDLeagueBar={leagueIDLeagueBar}  teamsSelected={teamsSelected}/>}
         ></Route>
       </Routes>
     </>

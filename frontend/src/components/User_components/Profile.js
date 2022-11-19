@@ -11,7 +11,6 @@ import Card from "react-bootstrap/Card";
 import Stack from "react-bootstrap/Stack";
 import Button from "react-bootstrap/Button";
 
-
 import DeleteFavouriteLeague from "./DeleteFavouriteLeague";
 import DeleteFavouriteTeam from "./DeleteFavouriteTeam";
 
@@ -40,7 +39,6 @@ export default function Profile({ props }) {
 
   //Fetch user info, fav leagues and fav teams
   useEffect(() => {
-    console.log(leagueId);
     const userID = localStorage.getItem("userid");
     fetch("/user/Info", {
       headers: {
@@ -204,12 +202,19 @@ export default function Profile({ props }) {
                 <div className="mb-5">
                   <p className="lead fw-normal mb-1">Favourite Leagues</p>
                   <Container>
-                    <Row>{favouriteLeaguesInfo.map(renderfavourites)}</Row>
+                    <Row>
+                    {favouriteLeagues === undefined ? (
+                        <div>No favourite leagues yet</div>
+                      ) : favouriteLeagues.length == 0 ? (
+                        <div>No favourite leagues yet</div>
+                      ) : (
+                        favouriteLeaguesInfo.map(renderfavourites)
+                      )}
+                    </Row>
                   </Container>
                   <Stack direction="horizontal" gap={5}>
-                  <Button variant="outline-primary"
-                      as={Link}
-                      to="/User/Addleague"
+                    <Button
+                      variant="outline-primary"
                       onClick={() => {
                         AddLeaguefunction();
                       }}
@@ -217,9 +222,8 @@ export default function Profile({ props }) {
                       {" "}
                       Add a league
                     </Button>
-                    <Button variant="outline-primary"
-                      as={Link}
-                      to="/User/DeleteLeague"
+                    <Button
+                      variant="outline-primary"
                       onClick={() => {
                         DeleteLeaguefunction();
                       }}
@@ -231,27 +235,35 @@ export default function Profile({ props }) {
                   <p></p>
                   <p className="lead fw-normal mb-1">Favourite Teams</p>
                   <Container>
-                    <Row>{favouriteTeamsInfo.map(renderfavourites)}</Row>
+                    <Row>
+                      {favouriteTeams === undefined ? (
+                        <div>No favourite teams yet</div>
+                      ) : favouriteTeams.length == 0 ? (
+                        <div>No favourite teams yet</div>
+                      ) : (
+                        favouriteTeamsInfo.map(renderfavourites)
+                      )}
+                    </Row>
                   </Container>
                   <Stack direction="horizontal" gap={5}>
-                  <Button variant="outline-primary"
-                    onClick={() => {
-                      AddTeamfunction();
-                    }}
-                  >
-                    {" "}
-                    Add a team
-                  </Button>
-                  <Button variant="outline-primary"
-                    as={Link}
-                    to="/User/DeleteTeam"
-                    onClick={() => {
-                      DeleteTeamfunction();
-                    }}
-                  >
-                    {" "}
-                    Delete a team
-                  </Button>
+                    <Button
+                      variant="outline-primary"
+                      onClick={() => {
+                        AddTeamfunction();
+                      }}
+                    >
+                      {" "}
+                      Add a team
+                    </Button>
+                    <Button
+                      variant="outline-primary"
+                      onClick={() => {
+                        DeleteTeamfunction();
+                      }}
+                    >
+                      {" "}
+                      Delete a team
+                    </Button>
                   </Stack>
                 </div>
 

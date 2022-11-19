@@ -7,22 +7,26 @@ import { Link } from "react-router-dom";
 
 
 export default function ChooseTeams(props) {
-  const { leagueID, setTeamsSelected, setTeamsChosen, setNavState } = props;
+  const { leagueID, setTeamsSelected, } = props;
 
   const [teamsArray, setTeamsArray] = useState([]);
 
   const [teams, setTeams] = useState([]);
 
+
   useEffect(() => {
-    fetch("/soccer/teams", {
-      headers: {
-        leagueID: leagueID,
-      },
-    })
-      .then((res) => res.json())
-      .then((arr) => {
-        setTeamsArray(arr);
-      });
+    if (leagueID !== undefined) {
+      if (leagueID.length >= 1) {
+        fetch("/soccer/teams", {
+          headers: {
+            leagueID: leagueID,
+          },
+        })
+          .then((res) => res.json())
+          .then((arr) => {
+            setTeamsArray(arr);
+          });
+      }}
   }, []);
 
   const renderCard = (card) => {
@@ -55,6 +59,8 @@ export default function ChooseTeams(props) {
     );
   };
 
+
+
   return (
     <>
       <Navbar />
@@ -70,19 +76,19 @@ export default function ChooseTeams(props) {
         {<br></br>}
         {<br></br>}
         <div className="Submit_button">
-          <Button as={Link} to="/Guest/Teams/Calendar"
+          <Button as={Link} to="/Guest/calendar"
             className="button"
             onClick={() => {
               setTeamsSelected(teams);
-              setTeamsChosen(true);
-              setNavState("Teams");
+              // setTeamsChosen(true);
+              // setNavState("Teams");
             }}
           >
             {" "}
             Submit selection
           </Button>
         </div>
-      </div>
+       </div>
     </>
   );
 }
