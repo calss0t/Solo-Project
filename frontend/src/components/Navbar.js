@@ -1,6 +1,6 @@
 import Nav from "react-bootstrap/Nav";
 import "../styles/Navbar.css";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import logo from "../heroPic.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, useLocation } from "react-router-dom";

@@ -84,7 +84,7 @@ export default function AddLeague({
     <Modal className="modal_2" show={show} onHide={closePopup} keyboard={false}>
       <div className="League_selection">
         <h1 className="page_title">Choose a league</h1>
-        {leagueArray.length == 0 ? (
+        {leagueArray.length === 0 ? (
           <h3>"Sorry, there are no movies with your current search options"</h3>
         ) : (
           leagueArray.map(renderCard)

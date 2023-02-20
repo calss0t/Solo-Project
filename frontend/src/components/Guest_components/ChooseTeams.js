@@ -27,7 +27,7 @@ export default function ChooseTeams(props) {
             setTeamsArray(arr);
           });
       }}
-  }, []);
+  }, [leagueID]);
 
   const renderCard = (card) => {
     return (
@@ -66,7 +66,7 @@ export default function ChooseTeams(props) {
       <Navbar />
       <div className="League_selection">
         <h1 className="page_title">Now choose the teams</h1>
-        {teamsArray.length == 0 ? (
+        {teamsArray.length === 0 ? (
           <h3>Loading, please wait</h3>
         ) : (
           teamsArray.map(renderCard)

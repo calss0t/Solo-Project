@@ -61,7 +61,6 @@ export default function ChildModal({ leagueId, ShowChildModal, setShowChildModal
   };
 
   function submit() {
-    console.log(teamsIDs)
     const userID = localStorage.getItem("userid")
     const teams = teamsIDs
     const data = { teams, userID };
@@ -88,7 +87,7 @@ export default function ChildModal({ leagueId, ShowChildModal, setShowChildModal
       <Modal className="modal_2" show={ShowChildModal} onHide={closePopup}>
         <div className="League_selection">
           <h1 className="page_title">Now choose a teams</h1>
-          {teamsArray.length == 0 ? (
+          {teamsArray.length === 0 ? (
             <h3>Loading, please wait</h3>
           ) : (
             teamsArray.map(renderCard)

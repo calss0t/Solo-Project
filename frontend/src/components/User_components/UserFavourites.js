@@ -6,7 +6,6 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import Form from "react-bootstrap/Form";
 import moment from "moment";
-import TeamsGames from "../Guest_components/TeamsGames";
 
 export default function UserFavourites({ userTeamsSelected }) {
   const [games, setGames] = useState([]);
@@ -23,7 +22,6 @@ export default function UserFavourites({ userTeamsSelected }) {
     })
       .then((res) => res.json())
       .then((arr) => {
-        console.log(arr);
         setGames(arr);
       });
 
@@ -111,7 +109,6 @@ export default function UserFavourites({ userTeamsSelected }) {
           placeholder={date}
           value={date}
           onChange={(e) => {
-            console.log(moment(e.target.value).format("YYYY-MM-DD"));
             setDate(moment(e.target.value).format("YYYY-MM-DD"));
           }}
         />

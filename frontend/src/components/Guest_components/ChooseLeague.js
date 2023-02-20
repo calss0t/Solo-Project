@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import "../../styles/ChooseLeague.css";
-import moment from "moment";
 import Navbar from "../Navbar";
 import { Link } from "react-router-dom";
 
@@ -63,7 +62,7 @@ export default function ChooseLeague({ setLeagueIDLeagueBar }) {
       <Navbar />
       <div className="League_selection">
         <h1 className="page_title">Choose a league to see the games</h1>
-        {leagueArray.length == 0 ? (
+        {leagueArray.length === 0 ? (
           <h3>"Sorry, there are no movies with your current search options"</h3>
         ) : (
           leagueArray.map(renderCard)

@@ -128,7 +128,7 @@ export default function ChooseLeagueTeams({
       <Navbar />
       <div className="League_selection">
         <h1 className="page_title">First choose a league</h1>
-        {leagueArray.length == 0 ? (
+        {leagueArray.length === 0 ? (
           <h3>"Sorry, there are no movies with your current search options"</h3>
         ) : (
           leagueArray.map(renderCard)
@@ -161,7 +161,6 @@ export default function ChooseLeagueTeams({
               onClick={() => {
                 setSearchDisplay(true);
                 Search()
-                console.log(searchBar);
               }}
             >
               Search

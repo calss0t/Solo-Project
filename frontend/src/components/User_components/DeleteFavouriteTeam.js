@@ -3,7 +3,6 @@ import Button from "react-bootstrap/Button";
 import "../../styles/ChooseLeague.css";
 import Modal from "react-bootstrap/Modal";
 import Col from "react-bootstrap/Col";
-import Image from "react-bootstrap/Image";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
@@ -33,12 +32,6 @@ export default function DeleteFavouriteTeam({
           {<br></br>}
           <Card.Title className="Favourite_name">{card.name}</Card.Title>
         </Card>
-        {/* <Image  key={card.id} onClick={() => {
-        document
-          .getElementById(`${card.id}top`)
-          .classList.toggle("League_card_selected");
-          setChosenTeamID(card.id);
-      }} className="Favourite_teams_Pictures" src={card.badge} /> */}
       </Col>
     );
   };
@@ -79,7 +72,7 @@ export default function DeleteFavouriteTeam({
           <h1 className="page_title">Choose the team you want to delete</h1>
           {favouriteTeamsInfo === undefined ? (
             <h3>"First add a favourite league"</h3>
-          ) : favouriteTeamsInfo.length == 0 ? (
+          ) : favouriteTeamsInfo.length === 0 ? (
             <h3>"First add a favourite league"</h3>
           ) : (
             <Container>

@@ -18,8 +18,6 @@ export default function CalendarView({ favouriteLeagues, favouriteTeams }) {
   const [leaguegames, setLeagueGames] = useState([]);
   const [teamsgames, setTeamsGames] = useState([]);
 
-  const [gamesArray, setGamesarray] = useState([]);
-
   useEffect(() => {
     (async () => {
       if (favouriteLeagues !== undefined) {

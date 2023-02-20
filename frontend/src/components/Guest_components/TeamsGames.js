@@ -14,8 +14,6 @@ export default function TeamsGames({ teamsSelected }) {
   const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
 
   useEffect(() => {
-    console.log(teamsSelected);
-    console.log(date);
     fetch("/soccer/games", {
       headers: {
         teamIDs: teamsSelected,
@@ -24,10 +22,9 @@ export default function TeamsGames({ teamsSelected }) {
     })
       .then((res) => res.json())
       .then((arr) => {
-        console.log(arr);
         setGames(arr);
       });
-  }, [date]);
+  }, [date, teamsSelected]);
 
   const ShowModal = (prop) => {
     document.getElementById("game-modal").classList.remove("hidden");
@@ -88,7 +85,6 @@ export default function TeamsGames({ teamsSelected }) {
             placeholder={date}
             value={date}
             onChange={(e) => {
-              console.log(moment(e.target.value).format("YYYY-MM-DD"));
               setDate(moment(e.target.value).format("YYYY-MM-DD"));
             }}
           />

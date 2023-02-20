@@ -143,7 +143,7 @@ export default function AddTeam({
       <Modal className="modal_2" show={TeamModalShow} onHide={closePopup}>
         <div className="League_selection">
           <h1 className="page_title">Choose a league</h1>
-          {leagueArray.length == 0 ? (
+          {leagueArray.length === 0 ? (
             <h3>
               "Sorry, there are no movies with your current search options"
             </h3>
@@ -174,7 +174,6 @@ export default function AddTeam({
               onClick={() => {
                 setSearchDisplay(true);
                 Search()
-                console.log(searchBar);
               }}
             >
               Search

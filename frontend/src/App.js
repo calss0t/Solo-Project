@@ -9,7 +9,7 @@ import moment from "moment";
 import Profile from "./components/User_components/Profile.js";
 
 
-import { Link, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import "./App.css";
 import Guest_SignIn_Register from "./components/Guest_components/Guest_SignIn_Register.js";
@@ -101,7 +101,6 @@ function App() {
     if (navState === "Leagues") {
       setNavState(<ChooseLeague setNavState={setNavState} />);
     } else if (navState === "Teams") {
-      {
         leagueChosen === false &&
           setNavState(
             <ChooseLeagueTeams
@@ -110,7 +109,6 @@ function App() {
               setLeagueChosen={setLeagueChosen}
             />
           );
-      }
       {
         leagueChosen === true &&
           teamsChosen === false &&

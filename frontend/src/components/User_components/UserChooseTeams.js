@@ -19,7 +19,6 @@ export default function UserChooseTeams(props) {
     })
       .then((res) => res.json())
       .then((arr) => {
-        console.log(arr)
         setTeamsArray(arr);
       });
   }, []);
