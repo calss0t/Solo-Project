@@ -39,7 +39,7 @@
 
 ### Homepage
 Users are initailly shown a form where they can register as a new user, login and continue as guests of they don't feel likke creating a user.
-<img alt="homepage" width="100%" src="./images/main page.png"/>
+<img alt="homepage" width="100%" src="./images/Main page.png"/>
 <hr>
 
 
