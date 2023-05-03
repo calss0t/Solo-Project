@@ -3,7 +3,7 @@
 </p>
 
 
-# <div align="center"> Twin shot is a web application that helps you keep up to date with your favourite football teams and leagues. </div>
+# <div align="center"> Twin shot is a web application that helps you keep up to date with your favourite sports teams and leagues. </div>
 <br>
 <br>
 
@@ -23,7 +23,7 @@
 - [Contributors](#contributors)
 
 # Introduction  
-[TwinShot](https://twin-shot.onrender.com/) is an application created to give users one location to find keep up to date with the games and results of their favourite teams and leagues. Insteqad of having to chefkc different applications for all the differnets teamns you follow, simply save your favourite teams and leagues and check out when they play, how did they do in tehir last games, and discover new teams to follow.  
+[TwinShot](https://twin-shot.onrender.com/) is an application created to give users one location to find and keep up to date with the games and results of their favourite teams and leagues. Instead of having to check different applications for all the differnets teams they follow, they can simply save their favourite teams and leagues and check out when they play, how did they do in their last games, and discover new teams to follow.  
 <br>
 [TwinShot](https://twin-shot.onrender.com/) uses javascript with react and react-bootstrap to render responsive UI/UX and runs a node.js server and a postgresql database.  
 
@@ -32,18 +32,57 @@
 * Uses Football API and The Sports Database to ensure only the latest data is displayed.
 * Be able to check out teams and leagues even without registering as a user.
 * Search teams by name.
-* Allows users to reate a profile to easily save teams and leagues as their favourties and save time the next time you want to check the results or games.
+* Allows users to create a profile to easily save teams and leagues as their favourties and save time the next time they want to check future games or the results of past games.
 * Finds data pertaining to games as the game stats, lineups and substitutions. 
 
 # Explanation of application (with images)
 
 ### Homepage
-Users are initailly shown a form where they can register as a new user, login and continue as guests of they don't feel likke creating a user.
-<img alt="homepage" width="100%" src="./images/Main page.png"/>
+Users are initailly shown a form where they can register as a new user, login or continue as guests if they don't feel like creating a user.
+<p align="center"> <img alt="homepage" width="50%" src="./images/Mainpage.png"/> </p>
+<hr>
+
+### Search for leagues as a guest
+Users are able to choose a league from the predetermined leagues available.
+<div align="center" style="display:flex;flex-direction:row"> <img alt="homepage" width="45%" src="./images/GuestLeagues.png"/> <img alt="homepage" width="45%" src="./images/GuestLeagues2.png"/> </div>
+<hr>
+
+### Search for teams as a guest
+Users are able to choose teams from their respective leagues.
+<p align="center"> <img alt="homepage" width="50%" src="./images/GuestTeams.png"/> </p>
+
+
+They are also able to search for teams directly.
+<p align="center"> <img alt="homepage" width="50%" src="./images/SearchTeams.png"/> </p>
+<hr>
+
+### Display of games for a guest
+Once the user has chosen the league or teams they want to see the past and future games of, they are shown a calendar view for the information of the selected leagues/teams.
+<div align="center" style="display:flex;flex-direction:row"> <img alt="homepage" width="45%" src="./images/CalendarGuestLeagues.png"/> <img alt="homepage" width="45%" src="./images/CalendarGuestTeams.png"/> </div>
 <hr>
 
 
+### Display game stats and information
+Users can then select the game they want to see the stats for and a modal will show up with all the game information.
+<p align="center"> <img alt="homepage" width="50%" src="./images/GameWidget2.png"/> </p>
+<hr>
 
+
+### Profile View
+If a user decided to register, they are then able to save different teams and/or leagues to their profile and they will see future games or the results of past games directly when they signin.
+<p align="center"> <img alt="homepage" width="50%" src="./images/ProfileView.png"/> </p>
+<hr>
+
+### Display of games for a user
+Once the user has chosen the league or teams they want to save as their favourites, they are able to see all their future games or the results of past games at the bottom of their profile page.
+They are also able to change the display of the calendar to monthly, weekly or daily.
+<div align="center" style="display:flex;flex-direction:row"> <img alt="homepage" width="45%" src="./images/CalendarViewMonth.png"/> <img alt="homepage" width="45%" src="./images/CalendarViewWeek.png"/> </div>
+<hr>
+
+### Display game stats and information
+Users can also select the game they want to see the stats for and a modal will show up with all the game information.
+<p align="center"> <img alt="homepage" width="50%" src="./images/GameWidget.png"/> </p>
+<hr>
 
 
 # Getting Started
