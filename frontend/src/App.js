@@ -44,6 +44,7 @@ function App() {
           onClick={() => {
             document.getElementById("myModal").style.display = "none";
             setLeagueID(undefined);
+            document.getElementById("calendar").style.zIndex = "1"
           }}
           className="close"
         >
@@ -53,8 +54,8 @@ function App() {
           name="league 1"
           className="hidden"
           id="wg-api-football-games"
-          data-host="v3.football.api-sports.io"
-          data-key="0a255779144d2cce4dcbe45071efb1d4"
+          data-host="api-football-v1.p.rapidapi.com"
+          data-key={process.env.REACT_APP_APIKEY}
           data-date={`${moment().format("YYYY-MM-DD")}`}
           data-league="undefined"
           data-season="2022"
@@ -78,6 +79,9 @@ function App() {
             let game = document.getElementById("wg-api-football-game");
             game.setAttribute("data-id", "undefined");
             document.getElementById("myModal1").style.display = "none";
+            document.getElementById("game-modal").classList.add("hidden");
+            document.getElementById("calendar").style.zIndex = "1"
+            document.getElementById("wg-api-football-game").classList.add("hidden");
           }}
           className="close"
         >
@@ -86,8 +90,8 @@ function App() {
         <div
           className="hidden"
           id="wg-api-football-game"
-          data-host="v3.football.api-sports.io"
-          data-key="0a255779144d2cce4dcbe45071efb1d4"
+          data-host="api-football-v1.p.rapidapi.com"
+          data-key={process.env.REACT_APP_APIKEY}
           data-id="undefined"
           data-theme=""
           data-show-errors="false"
@@ -155,21 +159,6 @@ function App() {
           }
         ></Route>
         <Route exact path="/User" element={<Profile />}></Route>
-        {/* <Route
-          exact
-          path="/Guest"
-          element={
-            <Guest
-              setNavState={setNavState}
-              setLeagueID={setLeagueID}
-              setLeagueChosen={setLeagueChosen}
-              setTeamsSelected={setTeamsSelected}
-              setTeamsChosen={setTeamsChosen}
-              setLogInOrRegister={setLogInOrRegister}
-              navState={navState}
-            />
-          }
-        ></Route> */}
         <Route exact path="/SignIn" element={<Guest_SignIn_Register />}></Route>
         <Route
           exact

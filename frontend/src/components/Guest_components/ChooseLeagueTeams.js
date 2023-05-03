@@ -129,7 +129,7 @@ export default function ChooseLeagueTeams({
       <div className="League_selection">
         <h1 className="page_title">First choose a league</h1>
         {leagueArray.length === 0 ? (
-          <h3>"Sorry, there are no movies with your current search options"</h3>
+          <h3>"Sorry, it looks like there was a problem loading the leagues. We are working on it and this function will be back very soon."</h3>
         ) : (
           leagueArray.map(renderCard)
         )}

@@ -46,6 +46,10 @@
   display: block;
 }
 
+#game-modal{
+  z-index: 999;
+}
+
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */

@@ -3,6 +3,8 @@ import Navbar from "../Navbar";
 
 import moment from "moment-timezone";
 
+import "./../../styles/calendar.css"
+
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -29,15 +31,15 @@ export default function Calendar({ leagueIDLeagueBar, teamsSelected }) {
       }
       if (teamsSelected !== undefined) {
         if (teamsSelected.length >= 1) {
-            await fetch("/Guest/Teams/Games", {
-              headers: {
-                teams: teamsSelected,
-              },
+          await fetch("/Guest/Teams/Games", {
+            headers: {
+              teams: teamsSelected,
+            },
+          })
+            .then((res) => {
+              return res.json();
             })
-              .then((res) => {
-                return res.json();
-              })
-              .then((result) => setTeamsGames(result));
+            .then((result) => setTeamsGames(result));
         }
       }
     })();
@@ -70,6 +72,7 @@ export default function Calendar({ leagueIDLeagueBar, teamsSelected }) {
   };
 
   const handleClick = (id) => {
+    document.getElementById("calendar").style.zIndex = "-1"
     document.getElementById("game-modal").classList.remove("hidden");
     document.getElementById("myModal1").style.display = "block";
     let game = document.getElementById("wg-api-football-game");
@@ -89,25 +92,27 @@ export default function Calendar({ leagueIDLeagueBar, teamsSelected }) {
       {<br></br>}
       {<br></br>}
       {<br></br>}
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
-        headerToolbar={{
-          left: "prev,next today",
-          center: "title",
-          right: "dayGridMonth,timeGridWeek,listWeek",
-        }}
-        events={renderLeaguesContent()}
-        eventTimeFormat={{
-          // like '14:30:00'
-          hour: "2-digit",
-          minute: "2-digit",
-          meridiem: "short",
-          hour12: false,
-        }}
-        eventClick={(e) => handleClick(e.event.id)}
-        timeZone="Asia/Tokyo"
-        initialView="dayGridMonth"
-      />
+      <div id="calendar" className="calendar">
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
+          headerToolbar={{
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,listWeek",
+          }}
+          events={renderLeaguesContent()}
+          eventTimeFormat={{
+            // like '14:30:00'
+            hour: "2-digit",
+            minute: "2-digit",
+            meridiem: "short",
+            hour12: false,
+          }}
+          eventClick={(e) => handleClick(e.event.id)}
+          timeZone="Asia/Tokyo"
+          initialView="dayGridMonth"
+        />
+      </div>
     </>
   );
 }

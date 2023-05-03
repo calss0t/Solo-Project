@@ -142,7 +142,9 @@ export default function SignIn_Register({ setLogInOrRegister, setGuest }) {
                   onChange={handleSignInPassword}
                 />
               </Form.Group>
+              <div class="buttons">
               <Button
+                style={{ marginRight: "10px" }}
                 as={Link}
                 to="/User"
                 variant="outline-primary"
@@ -162,6 +164,8 @@ export default function SignIn_Register({ setLogInOrRegister, setGuest }) {
                 {" "}
                 Continue as guest
               </Button>
+              </div>
+              
             </Form>
           </div>
         </div>
